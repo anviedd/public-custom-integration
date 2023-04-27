@@ -1,0 +1,16 @@
+{
+    "name": "OpenAPI Development Container",
+    "dockerFile": "Dockerfile",
+    "forwardPorts": [3000],
+    "extensions": [
+      "arjun.swagger-viewer",
+      "42crunch.vscode-openapi",
+      "mazimi.openapi-snippets",
+      "mikeralphson.openapi-lint"
+    ],
+    "postCreateCommand": "npm install -g @stoplight/prism-cli",
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash"
+    }
+}
+  
