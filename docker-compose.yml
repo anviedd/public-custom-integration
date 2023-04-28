@@ -6,13 +6,12 @@ services:
       - "3030:3030"
   swagger-ui:
     image: swaggerapi/swagger-ui
-    platform: linux/arm64
     environment:
       - SWAGGER_JSON=/openapi/openapi.yml
     volumes:
       - ./openapi.yml:/openapi/openapi.yml
     ports:
-      - "3031:80"
+      - "3031:8080"
   redoc:
     build:
       context: .

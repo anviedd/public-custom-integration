@@ -91,6 +91,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
+  # /products/{product_id}/adjust_inventory:
+  #   post:
+  #     tags:
+  #       - "Product"
+  #     summary: adjust inventory of one proruct
+  #     description: 指定商品の在庫を調整します
 
 components:
   parameters:
