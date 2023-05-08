@@ -1,0 +1,10 @@
+{
+    "name": "openapi-redoc",
+    "version": "1.0.0",
+    "scripts": {
+        "build": "redoc-cli bundle openapi.yml --output dist/index.html"
+    },
+    "dependencies": {
+        "redoc-cli": "^0.12.1"
+    }
+}
