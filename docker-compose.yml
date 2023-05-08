@@ -14,9 +14,9 @@ services:
       - "3031:8080"
   redoc:
     image: redocly/redoc
+    volumes:
+      - ./openapi.yml:/usr/share/nginx/html/openapi/openapi.yml:cached
     environment:
       - SPEC_URL=/openapi/openapi.yml
-    volumes:
-      - ./openapi.yml:/usr/share/nginx/html/openapi/openapi.yml
     ports:
       - "3032:80"

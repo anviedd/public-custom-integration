@@ -1,7 +1,12 @@
 openapi: 3.0.0
 info:
-  title: Integration API
-  description: Recustomer API for Return and Cancel v2
+  title: Recustomer Integration API
+  description: |-
+    Recustomer API for Return and Cancel v211
+    # Introduction
+    aaaaaaaaabbbbcccccsaaaaccccc
+    # Authentication
+    bbbbb
   version: 1.0.0
 
 paths:
@@ -13,13 +18,21 @@ paths:
       description: 注文情報を複数件取得します
       parameters:
         - $ref: "#/components/parameters/OrderIds"
+        - $ref: "#/components/parameters/OrderNumber"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
       responses:
         "200":
           description: successfully.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Orders"
+                type: object
+                properties:
+                  results:
+                    $ref: "#/components/schemas/Orders"
+                  naxt_page_token:
+                    $ref: "#/components/schemas/NextPageToken"
     post:
       tags:
         - "Order"
@@ -68,13 +81,20 @@ paths:
       description: 商品情報を複数件取得します
       parameters:
         - $ref: "#/components/parameters/ProductIds"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
       responses:
         "200":
           description: successfully.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Products"
+                type: object
+                properties:
+                  results:
+                    $ref: "#/components/schemas/Products"
+                  naxt_page_token:
+                    $ref: "#/components/schemas/NextPageToken"
 
   /products/{product_id}:
     get:
@@ -91,6 +111,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Product"
+  /products/{product_id}/variants:
+    get:
+      tags:
+        - "Product"
+      summary: get variantion product
+      description: 指定商品のバリエーションを取得します
+      parameters:
+        - $ref: "#/components/parameters/ProductId"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
+      responses:
+        "200":
+          description: successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    $ref: "#/components/schemas/Variants"
+                  naxt_page_token:
+                    $ref: "#/components/schemas/NextPageToken"
+  /products/{product_id}/variants/{sku}:
+    get:
+      tags:
+        - "Product"
+      summary: get variantion product
+      description: 指定商品のバリエーションを取得します
+      parameters:
+        - $ref: "#/components/parameters/ProductId"
+        - $ref: "#/components/parameters/SKU_path"
+      responses:
+        "200":
+          description: successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Variant"
   # /products/{product_id}/adjust_inventory:
   #   post:
   #     tags:
@@ -116,6 +174,11 @@ components:
       schema:
         type: integer
         format: int64
+    OrderNumber:
+      name: order_number
+      in: query
+      schema:
+        type: string
     ProductIds:
       name: ids
       in: query
@@ -130,6 +193,29 @@ components:
       required: true
       schema:
         type: string
+    SKU_path:
+      name: sku
+      in: path
+      description: SKU
+      required: true
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: 最大取得件数。未指定の場合、デフォルトで50件
+      schema:
+        type: integer
+        default: 50
+    PageToken:
+      name: page_token
+      in: query
+      required: false
+      description: 取得データの初期位置に関するトークン
+      schema:
+        type: string
+
   requestBodies:
     Order:
       content:
@@ -138,10 +224,29 @@ components:
             type: object
             required:
               - name
+              - total_amount
             properties:
-              name:
+              total_amount:
+                type: number
+              currency:
                 type: string
+                example: "JPY"
+              line_items:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderLineItem"
+              shipping_address:
+                $ref: "#/components/schemas/ShippingAddress"
+              billing_address:
+                $ref: "#/components/schemas/BillingAddress"
   schemas:
+    HasNext:
+      type: boolean
+      description: 他データが存在するかどうか
+    NextPageToken:
+      type: string
+      description: 次データのハッシュ値 次データが存在しない場合にはnullとする
+      nullable: true
     Orders:
       type: array
       items:
@@ -153,6 +258,125 @@ components:
           type: integer
           format: int64
           example: 1
+        order_number:
+          type: string
+        status:
+          type: string
+          # TODO: ステータスの内容は検討
+          enum:
+            [
+              "processing",
+              "returned",
+              "refunded",
+              "shipped",
+              "partional_returned",
+              "partional_refunded",
+              "partional_shipped",
+              "canceled",
+              "partional_canceled",
+            ]
+          description: "processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み、"
+        total_amount:
+          type: number
+        total_product_amount:
+          type: number
+        total_discount_amount:
+          type: number
+        total_tax_amount:
+          type: number
+        line_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderLineItem"
+        shipping_address:
+          $ref: "#/components/schemas/ShippingAddress"
+        billing_address:
+          $ref: "#/components/schemas/BillingAddress"
+    OrderLineItem:
+      type: object
+      properties:
+        product_id:
+          type: string
+        sku:
+          type: string
+        item_image:
+          type: string
+        total_amount:
+          type: number
+        product_amount:
+          type: number
+        discount_amount:
+          type: number
+        tax_amount:
+          type: number
+        query:
+          type: number
+        fulfillment_status:
+          type: string
+          enum: ["null", "fulfilled", "partial", "not_eligible"]
+          description: "null: 未発送、fulfilled: 発送済み, partial: 一部発送済み, not_eligible: 発送対象外"
+        variant_options:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderLineItemOption"
+    OrderLineItemOption:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "オプション名"
+          example: "カラー"
+        value:
+          type: string
+          description: "オプションに設定されている値"
+          example: "レッド"
+      description: "商品に設定されているオプション"
+
+    Address:
+      type: object
+      properties:
+        country:
+          type: string
+        postal_code:
+          type: string
+        province:
+          type: string
+        city:
+          type: string
+        street1:
+          type: string
+        street2:
+          type: string
+    ShippingAddress:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        full_name:
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
+    BillingAddress:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        full_name:
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+        address:
+          $ref: "#/components/schemas/Address"
     Products:
       type: array
       items:
@@ -160,7 +384,59 @@ components:
     Product:
       type: object
       properties:
+        product_id:
+          type: string
+          format: int64
+          example: 1
+        sku:
+          type: string
+          example: test-product
+        image_src:
+          type: string
+        name:
+          type: string
+          example: "テスト商品"
+        inventory_quantity:
+          type: integer
+          format: int64
+          description: "利用可能な在庫数"
+        variants:
+          type: array
+          items:
+            $ref: "#/components/schemas/Variant"
+    Variants:
+      type: array
+      items:
+        $ref: "#/components/schemas/Variant"
+    Variant:
+      type: object
+      properties:
         id:
           type: integer
           format: int64
           example: 1
+        sku:
+          type: string
+          example: test-product
+        image_url:
+          type: string
+        name:
+          type: string
+          example: "テスト商品"
+        quantity_stock:
+          type: integer
+          format: int64
+          description: "利用可能な在庫数"
+    Customer:
+      type: object
+      properties:
+        email:
+          type: string
+        last_name:
+          type: string
+          nullable: true
+        first_name:
+          type: string
+          nullable: true
+        full_name:
+          type: string
