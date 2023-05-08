@@ -4,9 +4,9 @@ info:
   description: |-
     Recustomer API for Return and Cancel v211
     # Introduction
-    Introduction
+    Introduction memo
     # Authentication
-    Authentication
+    Authentication memo
   version: 1.0.0
 
 paths:
