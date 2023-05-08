@@ -4,9 +4,9 @@ info:
   description: |-
     Recustomer API for Return and Cancel v211
     # Introduction
-    aaaaaaaaabbbbcccccsaaaaccccc
+    Introduction
     # Authentication
-    bbbbb
+    Authentication
   version: 1.0.0
 
 paths:
@@ -258,6 +258,9 @@ components:
           type: integer
           format: int64
           example: 1
+        created_at:
+          type: string
+          example: "2023-05-10T12:00:00+09:00"
         order_number:
           type: string
         status:
@@ -388,6 +391,9 @@ components:
           type: string
           format: int64
           example: 1
+        created_at:
+          type: string
+          example: "2023-05-10T12:00:00+09:00"
         sku:
           type: string
           example: test-product
@@ -415,6 +421,9 @@ components:
           type: integer
           format: int64
           example: 1
+        created_at:
+          type: string
+          example: "2023-05-10T12:00:00+09:00"
         sku:
           type: string
           example: test-product
