@@ -224,7 +224,6 @@ components:
             type: object
             required:
               - name
-              - total_amount
             properties:
               total_amount:
                 type: number
