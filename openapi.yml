@@ -230,25 +230,27 @@ components:
                 type: number
               total_tax_amount:
                 type: number
+              customer:
+                $ref: "#/components/schemas/Customer"
               line_items:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderLineItem"
               shipping_address:
                 $ref: "#/components/schemas/ShippingAddress"
-              billing_address:
-                $ref: "#/components/schemas/BillingAddress"
-              customer:
-                $ref: "#/components/schemas/Customer"
+              fulfillments:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderFulfillment"
+              transactions:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderTransaction"
               custom_properties:
                 type: object
                 properties:
                   customer_buy_times:
                     type: number
-              fulfillments:
-                type: array
-                items:
-                  $ref: "#/components/schemas/OrderFulfillment"
 
   schemas:
     HasNext:
@@ -304,8 +306,8 @@ components:
             $ref: "#/components/schemas/OrderLineItem"
         shipping_address:
           $ref: "#/components/schemas/ShippingAddress"
-        billing_address:
-          $ref: "#/components/schemas/BillingAddress"
+        # billing_address:
+        #   $ref: "#/components/schemas/BillingAddress"
     OrderLineItem:
       type: object
       properties:
