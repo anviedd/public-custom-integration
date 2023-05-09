@@ -4,8 +4,9 @@ info:
   description: |-
     Recustomer API for Return and Cancel v211
     # Introduction
-    Introduction memo
-    更新履歴をNotionで記録して公開するようにする(開発中の変更が予想されるため)
+    Introduction memo<br/>
+    更新履歴をNotionで記録して公開するようにする(開発中の変更が予想されるため)<br/>
+    よくある質問をNotionなどでまとめておく<br />
     # Authentication
     Authentication memo
     認証方法を入れる(現時点でBasic認証・Token認証・OAuthを設定する予定(Returnly参考))
