@@ -10,38 +10,18 @@ info:
     Authentication memo
     認証方法を入れる(現時点でBasic認証・Token認証・OAuthを設定する予定(Returnly参考))
   version: 1.0.0
+  # x-logo:
+  #   url: notion://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8ca291eb-759d-481b-bfbf-84aaa2bdd17d%2Flogo.png?id=0e6b1637-ed44-4e39-92a4-d4d5761b4c6e&table=block&spaceId=ee6cace2-9eea-4a9c-81f3-1a646693f604&width=2000&userId=b3b4ab11-cac2-4a93-97c3-7a0e7ea25879&cache=v2
 
 paths:
-  /orders:
-    get:
-      tags:
-        - "Order"
-      summary: get orders
-      description: 注文情報を複数件取得します
-      parameters:
-        - $ref: "#/components/parameters/OrderIds"
-        - $ref: "#/components/parameters/OrderNumber"
-        - $ref: "#/components/parameters/Limit"
-        - $ref: "#/components/parameters/PageToken"
-      responses:
-        "200":
-          description: successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  results:
-                    $ref: "#/components/schemas/Orders"
-                  naxt_page_token:
-                    $ref: "#/components/schemas/NextPageToken"
+  /orders/import:
     post:
       tags:
-        - "Order"
+        - "module1: Order importer"
       summary: post order
       description: 注文情報を作成します
       requestBody:
-        $ref: "#/components/requestBodies/Order"
+        $ref: "#/components/requestBodies/OrderImporter"
       responses:
         "201":
           description: successfully.
@@ -49,36 +29,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Order"
-
-  /orders/{order_id}:
-    get:
-      tags:
-        - "Order"
-      summary: get one order
-      description: 指定IDの注文情報を1件取得します
-      parameters:
-        - $ref: "#/components/parameters/OrderId"
-      responses:
-        "200":
-          description: successfully.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Order"
-        "404":
-          description: Order not found.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-
   /products:
     get:
       tags:
-        - "Product"
+        - "module2: Exchange"
       summary: get products
       description: 商品情報を複数件取得します
       parameters:
@@ -97,66 +51,21 @@ paths:
                     $ref: "#/components/schemas/Products"
                   naxt_page_token:
                     $ref: "#/components/schemas/NextPageToken"
-
-  /products/{product_id}:
-    get:
+  /orders:
+    post:
       tags:
-        - "Product"
-      summary: get one product
-      description: 商品情報を1件取得します
-      parameters:
-        - $ref: "#/components/parameters/ProductId"
+        - "module2: Exchange"
+      summary: post order
+      description: 注文情報を作成します
+      requestBody:
+        $ref: "#/components/requestBodies/Order"
       responses:
-        "200":
+        "201":
           description: successfully.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Product"
-  /products/{product_id}/variants:
-    get:
-      tags:
-        - "Product"
-      summary: get variantion product
-      description: 指定商品のバリエーションを取得します
-      parameters:
-        - $ref: "#/components/parameters/ProductId"
-        - $ref: "#/components/parameters/Limit"
-        - $ref: "#/components/parameters/PageToken"
-      responses:
-        "200":
-          description: successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  results:
-                    $ref: "#/components/schemas/Variants"
-                  naxt_page_token:
-                    $ref: "#/components/schemas/NextPageToken"
-  /products/{product_id}/variants/{sku}:
-    get:
-      tags:
-        - "Product"
-      summary: get variantion product
-      description: 指定商品のバリエーションを取得します
-      parameters:
-        - $ref: "#/components/parameters/ProductId"
-        - $ref: "#/components/parameters/SKU_path"
-      responses:
-        "200":
-          description: successfully.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Variant"
-  # /products/{product_id}/adjust_inventory:
-  #   post:
-  #     tags:
-  #       - "Product"
-  #     summary: adjust inventory of one proruct
-  #     description: 指定商品の在庫を調整します
+                $ref: "#/components/schemas/Order"
 
 components:
   parameters:
@@ -240,6 +149,64 @@ components:
                 $ref: "#/components/schemas/ShippingAddress"
               billing_address:
                 $ref: "#/components/schemas/BillingAddress"
+    OrderImporter:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              id:
+                type: number
+                example: 1234567
+              order_number:
+                type: string
+                example: 1001
+              status:
+                type: string
+                # TODO: ステータスの内容は検討
+                enum:
+                  [
+                    "processing",
+                    "returned",
+                    "refunded",
+                    "shipped",
+                    "partional_returned",
+                    "partional_refunded",
+                    "partional_shipped",
+                    "canceled",
+                    "partional_canceled",
+                  ]
+                description: "processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み、"
+              total_amount:
+                type: number
+              total_product_amount:
+                type: number
+              total_discount_amount:
+                type: number
+              total_tax_amount:
+                type: number
+              line_items:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderLineItem"
+              shipping_address:
+                $ref: "#/components/schemas/ShippingAddress"
+              billing_address:
+                $ref: "#/components/schemas/BillingAddress"
+              customer:
+                $ref: "#/components/schemas/Customer"
+              custom_properties:
+                type: object
+                properties:
+                  customer_buy_times:
+                    type: number
+              fulfillments:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderFulfillment"
+
   schemas:
     HasNext:
       type: boolean
@@ -323,6 +290,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/OrderLineItemOption"
+        tags:
+          type: array
+          items:
+            type: string
     OrderLineItemOption:
       type: object
       properties:
@@ -423,8 +394,7 @@ components:
           format: int64
           example: 1
         created_at:
-          type: string
-          example: "2023-05-10T12:00:00+09:00"
+          $ref: "#/components/schemas/Created_at"
         sku:
           type: string
           example: test-product
@@ -439,6 +409,9 @@ components:
           description: "利用可能な在庫数"
     Customer:
       type: object
+      required:
+        - email
+          full_name
       properties:
         email:
           type: string
@@ -450,3 +423,99 @@ components:
           nullable: true
         full_name:
           type: string
+    Created_at:
+      type: string
+      example: "2023-05-10T12:00:00+09:00"
+    Updated_at:
+      type: string
+      example: "2023-05-12T10:30:00+09:00"
+    OrderFulfillment:
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+          enum: ["processing", "success", "failure"]
+          description: "processing: 処理中、success: 処理成功、failure: 処理失敗"
+        tracking_company:
+          type: string
+        tracking_number:
+          type: integer
+          example: 1234567
+        fulfillment_line_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/FulfillmentLineItems"
+        created_at:
+          $ref: "#/components/schemas/Created_at"
+        updated_at:
+          $ref: "#/components/schemas/Updated_at"
+    FulfillmentLineItems:
+      type: object
+      properties:
+        id:
+          type: integer
+        order_line_item_id:
+          type: integer
+          description: 配送された商品のline_item_id
+        units:
+          type: integer
+          description: 配送済みの商品数
+    OrderTransaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        amount:
+          type: number
+        currency:
+          type: string
+          example: "JPY"
+        status:
+          type: string
+          enum: ["success", "failure", "pending"]
+          description: "success: 成功、failure: 失敗、pending: 保留"
+        type:
+          type: string
+        gateway:
+          type: string
+        created_at:
+          $ref: "#/components/schemas/Created_at"
+        updated_at:
+          $ref: "#/components/schemas/Updated_at"
+
+    PostRequestSuccessResponse:
+      type: object
+      properties:
+        results:
+          type: string
+          example: "success"
+    PostRequest400Response:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Bad Request"
+          description: "エラー詳細が格納されます"
+    PostRequest401Response:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Unauthorized"
+          description: "エラー詳細が格納されます"
+    PostRequest422Response:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Unprocessable Entity"
+          description: "エラー詳細が格納されます"
+    PostRequest500Response:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Internal Server Error"
+          description: "エラー詳細が格納されます(Recustomerにエラーが発生している可能性がございます。お手数ですがお問合せください)"
