@@ -11,7 +11,6 @@ info:
     性能面で期待することを明記しておく必要がある？
     # Authentication
     Recustomerからトークンとアクセスキーを提供します。それらのパラメータをAPIのheaderに含めて送信します。
-    ### Token認証
     <table>
       <tr>
         <td>
@@ -20,12 +19,18 @@ info:
       </tr>
       <tr>
         <td>
-          api_token
+          api_store_key
+        </td>
+        <td>
+          マーチャントを識別するためのキー情報です。
         </td>
       </tr>
       <tr>
         <td>
-          api_store_key
+          api_token
+        </td>
+        <td>
+          送信されたリクエストの認証に使うランダムな文字列です。
         </td>
       </tr>
     </table>
@@ -41,8 +46,8 @@ paths:
       summary: order importer
       description: 注文情報をRecustomerに送信します
       parameters:
-        - $ref: "#/components/parameters/Token"
         - $ref: "#/components/parameters/StoreKey"
+        - $ref: "#/components/parameters/Token"
       requestBody:
         $ref: "#/components/requestBodies/OrderImporter"
 
