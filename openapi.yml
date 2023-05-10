@@ -8,9 +8,27 @@ info:
     更新履歴をNotionで記録して公開するようにする(開発中の変更が予想されるため)<br/>
     よくある質問をNotionなどでまとめておく<br />
     先方から送信されるAPIについてはdatadogなどでwatchしておく必要がある
+    性能面で期待することを明記しておく必要がある？
     # Authentication
-    Authentication memo
-    認証方法を入れる(現時点でBasic認証・Token認証・OAuthを設定する予定(Returnly参考))
+    Recustomerからトークンとアクセスキーを提供します。それらのパラメータをAPIのheaderに含めて送信します。
+    ### Token認証
+    <table>
+      <tr>
+        <td>
+          <b>Required configuration values</b>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          api_token
+        </td>
+      </tr>
+      <tr>
+        <td>
+          api_store_key
+        </td>
+      </tr>
+    </table>
   version: 1.0.0
   # x-logo:
   #   url: notion://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8ca291eb-759d-481b-bfbf-84aaa2bdd17d%2Flogo.png?id=0e6b1637-ed44-4e39-92a4-d4d5761b4c6e&table=block&spaceId=ee6cace2-9eea-4a9c-81f3-1a646693f604&width=2000&userId=b3b4ab11-cac2-4a93-97c3-7a0e7ea25879&cache=v2
@@ -22,8 +40,12 @@ paths:
         - "module1: Order importer"
       summary: order importer
       description: 注文情報をRecustomerに送信します
+      parameters:
+        - $ref: "#/components/parameters/Token"
+        - $ref: "#/components/parameters/StoreKey"
       requestBody:
         $ref: "#/components/requestBodies/OrderImporter"
+
       responses:
         "201":
           description: successfully.
@@ -209,6 +231,22 @@ components:
       description: 取得データの初期位置に関するトークン
       schema:
         type: string
+    Token:
+      name: api_token
+      in: header
+      required: true
+      description: 認証用トークン(Recustomerから提供します)
+      schema:
+        type: string
+      example: "X12345678"
+    StoreKey:
+      name: api_store_key
+      in: header
+      required: true
+      description: ストアKey(Recustomerから提供します)
+      schema:
+        type: string
+      example: "test-store"
 
   requestBodies:
     Order:
