@@ -61,7 +61,7 @@ paths:
       tags:
         - "module2: Exchange"
       summary: get products variants
-      description: 商品情報を複数件取得します
+      description: 商品情報を取得します
       parameters:
         - $ref: "#/components/parameters/ProductId"
       responses:
@@ -179,6 +179,12 @@ components:
             type: object
             required:
               - line_items
+              - total_amount
+              - product_amount
+              - discount_amount
+              - tax_amount
+              - currency
+              - shipping_address
             properties:
               total_amount:
                 type: number
@@ -437,6 +443,10 @@ components:
         $ref: "#/components/schemas/Product"
     Product:
       type: object
+      required:
+        - product_id
+        - product_name
+        - variants
       properties:
         product_id:
           type: string
@@ -462,7 +472,8 @@ components:
       type: object
       required:
         - quantity_in_stock
-          sku
+        - name
+        - sku
       properties:
         sku:
           type: string
