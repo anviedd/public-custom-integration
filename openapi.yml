@@ -110,6 +110,45 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PostRequest500Response"
+  /orders/cancel:
+    post:
+      tags:
+        - "module3: Cancel"
+      summary: cancel order
+      description: 注文情報をキャンセルします
+      requestBody:
+        $ref: "#/components/requestBodies/OrderCancel"
+      responses:
+        "201":
+          description: successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostRequestSuccessResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostRequest400Response"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostRequest401Response"
+        "422":
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostRequest422Response"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostRequest500Response"
 
 components:
   parameters:
@@ -281,7 +320,16 @@ components:
                 properties:
                   customer_buy_times:
                     type: number
-
+    OrderCancel:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - order_id
+            properties:
+              order_id:
+                type: string
   schemas:
     HasNext:
       type: boolean
