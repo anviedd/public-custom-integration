@@ -2,11 +2,12 @@ openapi: 3.0.0
 info:
   title: Recustomer Integration API
   description: |-
-    Recustomer API for Return and Cancel v211
+    Recustomer API for Return and Cancel v2
     # Introduction
     Introduction memo<br/>
     更新履歴をNotionで記録して公開するようにする(開発中の変更が予想されるため)<br/>
     よくある質問をNotionなどでまとめておく<br />
+    先方から送信されるAPIについてはdatadogなどでwatchしておく必要がある
     # Authentication
     Authentication memo
     認証方法を入れる(現時点でBasic認証・Token認証・OAuthを設定する予定(Returnly参考))
@@ -37,19 +38,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/PostRequest400Response"
         "401":
-          description: Bad request
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/PostRequest401Response"
         "422":
-          description: Bad request
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/PostRequest422Response"
         "500":
-          description: Bad request
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -59,7 +60,7 @@ paths:
     get:
       tags:
         - "module2: Exchange"
-      summary: get products
+      summary: get products variants
       description: 商品情報を複数件取得します
       parameters:
         - $ref: "#/components/parameters/ProductId"
@@ -92,19 +93,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/PostRequest400Response"
         "401":
-          description: Bad request
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/PostRequest401Response"
         "422":
-          description: Bad request
+          description: Unprocessable Entity
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/PostRequest422Response"
         "500":
-          description: Bad request
+          description: Internal Server Error
           content:
             application/json:
               schema:
@@ -177,9 +178,15 @@ components:
           schema:
             type: object
             required:
-              - name
+              - line_items
             properties:
               total_amount:
+                type: number
+              product_amount:
+                type: number
+              discount_amount:
+                type: number
+              tax_amount:
                 type: number
               currency:
                 type: string
@@ -190,18 +197,23 @@ components:
                   $ref: "#/components/schemas/OrderLineItem"
               shipping_address:
                 $ref: "#/components/schemas/ShippingAddress"
-              billing_address:
-                $ref: "#/components/schemas/BillingAddress"
     OrderImporter:
       content:
         application/json:
           schema:
             type: object
             required:
-              - name
+              - "id"
+              - "order_number"
+              - "status"
+              - "total_amount"
+              - "customer"
+              - "line_items"
+              - "shipping_address"
+              - "fulfillments"
             properties:
               id:
-                type: number
+                type: string
                 example: 1234567
               order_number:
                 type: string
@@ -224,12 +236,19 @@ components:
                 description: "processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み、"
               total_amount:
                 type: number
+                example: 990
               total_product_amount:
                 type: number
+                example: 1000
               total_discount_amount:
                 type: number
+                example: 100
               total_tax_amount:
                 type: number
+                example: 90
+              currency:
+                type: string
+                example: "JPY"
               customer:
                 $ref: "#/components/schemas/Customer"
               line_items:
@@ -310,7 +329,12 @@ components:
         #   $ref: "#/components/schemas/BillingAddress"
     OrderLineItem:
       type: object
+      required:
+        - id
+          quantity
       properties:
+        id:
+          type: integer
         product_id:
           type: string
         sku:
@@ -325,7 +349,7 @@ components:
           type: number
         tax_amount:
           type: number
-        query:
+        quantity:
           type: number
         fulfillment_status:
           type: string
@@ -341,6 +365,9 @@ components:
             type: string
     OrderLineItemOption:
       type: object
+      required:
+        - name
+          value
       properties:
         name:
           type: string
@@ -427,7 +454,8 @@ components:
     Variant:
       type: object
       required:
-        - "quantity_in_stock"
+        - quantity_in_stock
+          sku
       properties:
         sku:
           type: string
@@ -478,8 +506,8 @@ components:
           type: integer
         status:
           type: string
-          enum: ["processing", "success", "failure"]
-          description: "processing: 処理中、success: 処理成功、failure: 処理失敗"
+          enum: ["pending", "open", "success", "cancelled", "failure"]
+          description: "pending: 保留中、open: 処理中、success: 処理成功、cancelled: キャンセル、failure: 処理失敗"
         tracking_company:
           type: string
         tracking_number:
