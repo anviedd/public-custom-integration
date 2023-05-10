@@ -203,14 +203,14 @@ components:
           schema:
             type: object
             required:
-              - "id"
-              - "order_number"
-              - "status"
-              - "total_amount"
-              - "customer"
-              - "line_items"
-              - "shipping_address"
-              - "fulfillments"
+              - id
+              - order_number
+              - status
+              - total_amount
+              - customer
+              - line_items
+              - shipping_address
+              - fulfillments
             properties:
               id:
                 type: string
