@@ -94,6 +94,7 @@ paths:
       description: 商品情報を取得します
       parameters:
         - $ref: "#/components/parameters/ProductId"
+        - $ref: "#/components/parameters/Token"
       responses:
         "200":
           description: successfully.
@@ -107,6 +108,8 @@ paths:
         - "module2: Exchange"
       summary: post order
       description: 注文情報を作成します
+      parameters:
+        - $ref: "#/components/parameters/Token"
       requestBody:
         $ref: "#/components/requestBodies/Order"
       responses:
@@ -146,6 +149,8 @@ paths:
         - "module3: Cancel"
       summary: cancel order
       description: 注文情報をキャンセルします
+      parameters:
+        - $ref: "#/components/parameters/Token"
       requestBody:
         $ref: "#/components/requestBodies/OrderCancel"
       responses:
