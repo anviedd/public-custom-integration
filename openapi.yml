@@ -224,28 +224,6 @@ components:
       required: true
       schema:
         type: string
-    SKU_path:
-      name: sku
-      in: path
-      description: SKU
-      required: true
-      schema:
-        type: string
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: 最大取得件数。未指定の場合、デフォルトで50件
-      schema:
-        type: integer
-        default: 50
-    PageToken:
-      name: page_token
-      in: query
-      required: false
-      description: 取得データの初期位置に関するトークン
-      schema:
-        type: string
     Token:
       name: api_token
       in: header
@@ -337,6 +315,7 @@ components:
                     "partional_canceled",
                   ]
                 description: "processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み、"
+                example: "processing"
               total_amount:
                 type: number
                 example: 990
@@ -383,6 +362,7 @@ components:
             properties:
               order_id:
                 type: string
+                example: 12345
   schemas:
     HasNext:
       type: boolean
@@ -454,22 +434,34 @@ components:
       properties:
         id:
           type: integer
+          example: 1000
         product_id:
           type: string
+          example: "product_id"
+        product_name:
+          type: string
+          example: "テスト商品"
         sku:
           type: string
+          example: "product_id_S_Red"
         item_image:
           type: string
+          example: "https://recustomer.me/image/12345"
         total_amount:
           type: number
+          example: 990
         product_amount:
           type: number
+          example: 1000
         discount_amount:
           type: number
+          example: 100
         tax_amount:
           type: number
+          example: 90
         quantity:
           type: number
+          example: 1
         fulfillment_status:
           type: string
           enum: ["null", "fulfilled", "partial", "not_eligible"]
@@ -482,6 +474,7 @@ components:
           type: array
           items:
             type: string
+            example: ["test", "sample"]
     OrderLineItemOption:
       type: object
       required:
@@ -509,16 +502,22 @@ components:
       properties:
         country:
           type: string
+          example: "日本"
         postal_code:
           type: string
+          example: "1010024"
         province:
           type: string
+          example: "東京都"
         city:
           type: string
+          example: "千代田区"
         street1:
           type: string
+          example: "神田和泉町1-8-11"
         street2:
           type: string
+          example: "サン・センタービル5F"
     ShippingAddress:
       type: object
       required:
@@ -528,14 +527,19 @@ components:
       properties:
         first_name:
           type: string
+          example: "太郎"
         last_name:
           type: string
+          example: "佐藤"
         full_name:
           type: string
+          example: "佐藤 太郎"
         email:
           type: string
+          example: "test@recustomer.co"
         phone_number:
           type: string
+          example: "000-####-####"
         address:
           $ref: "#/components/schemas/Address"
     Products:
@@ -557,6 +561,7 @@ components:
           example: "テスト商品"
         image_url:
           type: string
+          example: "https://recustomer.me/image/12345"
         created_at:
           $ref: "#/components/schemas/Created_at"
         updated_at:
@@ -581,6 +586,7 @@ components:
           example: test-product
         image_url:
           type: string
+          example: "https://recustomer.me/image/12345"
         name:
           type: string
           example: "テスト商品"
@@ -604,14 +610,18 @@ components:
       properties:
         email:
           type: string
+          example: "test@recustomer.co"
         last_name:
           type: string
           nullable: true
+          example: "佐藤"
         first_name:
           type: string
           nullable: true
+          example: "太郎"
         full_name:
           type: string
+          example: "佐藤 太郎"
     Created_at:
       type: string
       example: "2023-05-10T12:00:00+09:00"
