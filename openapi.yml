@@ -4,11 +4,13 @@ info:
   description: |-
     Recustomer API for Return and Cancel v2
     # Introduction
-    Introduction memo<br/>
-    更新履歴をNotionで記録して公開するようにする(開発中の変更が予想されるため)<br/>
-    よくある質問をNotionなどでまとめておく<br />
-    先方から送信されるAPIについてはdatadogなどでwatchしておく必要がある
-    性能面で期待することを明記しておく必要がある？
+    Integration APIは、Recustomerを利用するために必要な各種データを連携するためのAPIです。
+    ### Module1: Order importer
+    マーチャントで注文が作成または更新された際に、Recustomerに注文情報を送信する必要があります。
+    ### Module2: Exchange
+    商品の在庫情報をReucustomerに提供します。また、Recustomer上で作成された注文情報をマーチャントに送信します。
+    ### Module3: Cancel
+    Recustomerでキャンセルされた注文情報をマーチャントに送信します。
     # Authentication
     Recustomerからトークンとアクセスキーを提供します。それらのパラメータをAPIのheaderに含めて送信します。
     <table>
