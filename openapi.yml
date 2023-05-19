@@ -292,6 +292,7 @@ components:
               - shipping_address
               - fulfillments
               - transactions
+              - created_at
             properties:
               id:
                 type: string
@@ -328,9 +329,35 @@ components:
               total_tax_amount:
                 type: number
                 example: 90
+              pre_discount_amount:
+                type: string
+                example: 1100
+                description: 割引前商品価格(税込)の合計
+              is_tax_included:
+                type: boolean
+                example: true
+                description: total_amountが税を含む金額か
               currency:
                 type: string
                 example: "JPY"
+              quantity:
+                type: integer
+                example: 3
+                description: 注文商品数の合計
+              created_at:
+                $ref: "#/components/schemas/Created_at"
+              updated_at:
+                $ref: "#/components/schemas/Updated_at"
+              order_tags:
+                type: array
+                items:
+                  type: string
+                  example: ["テスト注文"]
+              note:
+                type: string
+                example: "テスト注文"
+                description: 注文の補足情報
+
               customer:
                 $ref: "#/components/schemas/Customer"
               line_items:
@@ -411,6 +438,14 @@ components:
           type: number
         total_tax_amount:
           type: number
+        pre_discount_amount:
+          type: string
+          example: 1100
+          description: 割引前商品価格(税込)の合計
+        is_tax_included:
+          type: boolean
+          example: true
+          description: total_amountが税を含む金額か
         line_items:
           type: array
           items:
@@ -441,6 +476,10 @@ components:
         product_name:
           type: string
           example: "テスト商品"
+        variant_id:
+          type: string
+          example: "2538974832789"
+          description: "バリエーションナンバー"
         sku:
           type: string
           example: "product_id_S_Red"
@@ -448,17 +487,29 @@ components:
           type: string
           example: "https://recustomer.me/image/12345"
         total_amount:
-          type: number
+          type: string
           example: 990
+          description: 合計金額
         product_amount:
           type: number
           example: 1000
+          description: 商品の金額の合計
         discount_amount:
           type: number
           example: 100
+          description: 割引額の合計
         tax_amount:
           type: number
           example: 90
+          description: 税の合計
+        pre_discount_amount:
+          type: string
+          example: 1100
+          description: 割引前商品価格(税込)の合計
+        is_tax_included:
+          type: boolean
+          example: true
+          description: total_amountが税を含む金額か
         quantity:
           type: number
           example: 1
@@ -470,11 +521,21 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/OrderLineItemOption"
-        tags:
+        product_tags:
           type: array
           items:
             type: string
             example: ["test", "sample"]
+        product_collections:
+          type: array
+          items:
+            type: string
+            example: ["食品", "テストコレクション"]
+        product_supplier:
+          type: string
+          example: "テスト店舗"
+          description: 販売元
+
     OrderLineItemOption:
       type: object
       required:
@@ -500,9 +561,10 @@ components:
         - city
         - street1
       properties:
-        country:
+        country_code:
           type: string
-          example: "日本"
+          example: "JP"
+          description: 国コード 日本の場合"JP" ISO-3166-2参照
         postal_code:
           type: string
           example: "1010024"
@@ -522,7 +584,6 @@ components:
       type: object
       required:
         - full_name
-        - email
         - address
       properties:
         first_name:
@@ -615,13 +676,37 @@ components:
           type: string
           nullable: true
           example: "佐藤"
+          description: 姓
         first_name:
           type: string
           nullable: true
           example: "太郎"
+          description: 名
         full_name:
           type: string
           example: "佐藤 太郎"
+          description: 姓名
+        phone_number:
+          type: string
+          example: "000-####-####"
+          description: 電話番号
+        is_consent_email_marketing:
+          type: boolean
+          example: false
+          description: emailマーケティングに同意しているか
+        is_consent_sms_marketing:
+          type: boolean
+          example: false
+          description: SMSマーケティングに同意しているか
+        purchase_times:
+          type: integer
+          example: 11
+          description: 購入回数
+        customer_tags:
+          type: array
+          items:
+            type: string
+            example: ["test顧客", "一般会員"]
     Created_at:
       type: string
       example: "2023-05-10T12:00:00+09:00"
@@ -640,8 +725,10 @@ components:
         tracking_company:
           type: string
         tracking_number:
-          type: integer
-          example: 1234567
+          type: array
+          items:
+            type: string
+            example: ["4983892", "7348974"]
         fulfillment_line_items:
           type: array
           items:
@@ -657,8 +744,8 @@ components:
           type: integer
         order_line_item_id:
           type: integer
-          description: 配送された商品のline_item_id
-        units:
+          description: 発送された商品のline_item_id
+        quantity:
           type: integer
           description: 配送済みの商品数
     OrderTransaction:
