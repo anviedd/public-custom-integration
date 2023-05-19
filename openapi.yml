@@ -258,21 +258,40 @@ components:
             properties:
               total_amount:
                 type: number
-              product_amount:
+                example: 990
+                description: 合計金額
+              total_product_amount:
                 type: number
-              discount_amount:
+                example: 1000
+                description: 商品金額の合計
+              total_discount_amount:
                 type: number
-              tax_amount:
+                example: 100
+                description: 割引金額の合計
+              total_tax_amount:
                 type: number
+                example: 90
+                description: 税の合計金額
+              pre_discount_amount:
+                type: string
+                example: 1100
+                description: 割引前商品価格(税込)の合計
+              is_tax_included:
+                type: boolean
+                example: true
+                description: total_amountが税を含む金額か
               currency:
                 type: string
                 example: "JPY"
+                description: 通過単位
               line_items:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderLineItem"
+                description: 注文商品
               shipping_address:
                 $ref: "#/components/schemas/ShippingAddress"
+                description: 発送先住所
     OrderImporter:
       content:
         application/json:
@@ -297,9 +316,11 @@ components:
               id:
                 type: string
                 example: 1234567
+                description: 本注文を特定できるユニークな注文ID
               order_number:
                 type: string
                 example: 1001
+                description: 注文番号
               status:
                 type: string
                 # TODO: ステータスの内容は検討
@@ -315,20 +336,24 @@ components:
                     "canceled",
                     "partional_canceled",
                   ]
-                description: "processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み、"
+                description: "注文ステータス processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み、"
                 example: "processing"
               total_amount:
                 type: number
                 example: 990
+                description: 合計金額
               total_product_amount:
                 type: number
                 example: 1000
+                description: 商品金額の合計
               total_discount_amount:
                 type: number
                 example: 100
+                description: 割引金額の合計
               total_tax_amount:
                 type: number
                 example: 90
+                description: 税の合計金額
               pre_discount_amount:
                 type: string
                 example: 1100
@@ -340,6 +365,7 @@ components:
               currency:
                 type: string
                 example: "JPY"
+                description: 通過単位
               quantity:
                 type: integer
                 example: 3
@@ -353,6 +379,7 @@ components:
                 items:
                   type: string
                   example: ["テスト注文"]
+                description: 注文タグ
               note:
                 type: string
                 example: "テスト注文"
@@ -360,20 +387,25 @@ components:
 
               customer:
                 $ref: "#/components/schemas/Customer"
+                description: 顧客情報
               line_items:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderLineItem"
+                description: 注文商品
               shipping_address:
                 $ref: "#/components/schemas/ShippingAddress"
+                description: 発送先住所
               fulfillments:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderFulfillment"
+                description: 発送情報
               transactions:
                 type: array
                 items:
                   $ref: "#/components/schemas/OrderTransaction"
+                description: 金額情報
               custom_properties:
                 type: object
                 properties:
@@ -390,6 +422,7 @@ components:
               order_id:
                 type: string
                 example: 12345
+                description: キャンセルする注文ID
   schemas:
     HasNext:
       type: boolean
@@ -479,7 +512,7 @@ components:
         variant_id:
           type: string
           example: "2538974832789"
-          description: "バリエーションナンバー"
+          description: バリエーションID
         sku:
           type: string
           example: "product_id_S_Red"
@@ -616,13 +649,16 @@ components:
       properties:
         product_id:
           type: string
-          example: 1
+          example: "product_id"
+          description: 商品ID
         product_name:
           type: string
           example: "テスト商品"
+          description: 商品名
         image_url:
           type: string
           example: "https://recustomer.me/image/12345"
+          description: 商品画像のリンク
         created_at:
           $ref: "#/components/schemas/Created_at"
         updated_at:
@@ -642,15 +678,22 @@ components:
         - name
         - sku
       properties:
+        variant_id:
+          type: string
+          example: "2538974832789"
+          description: バリエーションID
         sku:
           type: string
           example: test-product
+          description: SKU
         image_url:
           type: string
           example: "https://recustomer.me/image/12345"
+          description: 商品画像
         name:
           type: string
           example: "テスト商品"
+          description: 商品名
         quantity_in_stock:
           type: integer
           format: int64
@@ -663,6 +706,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/OrderLineItemOption"
+          description: 設定されているオプション情報
     Customer:
       type: object
       required:
@@ -710,9 +754,11 @@ components:
     Created_at:
       type: string
       example: "2023-05-10T12:00:00+09:00"
+      description: 作成日時
     Updated_at:
       type: string
       example: "2023-05-12T10:30:00+09:00"
+      description: 更新日時
     OrderFulfillment:
       type: object
       properties:
