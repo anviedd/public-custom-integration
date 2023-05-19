@@ -408,9 +408,7 @@ components:
                 description: 金額情報
               custom_properties:
                 type: object
-                properties:
-                  customer_buy_times:
-                    type: number
+                description: 独自で設定したいカラム情報
     OrderCancel:
       content:
         application/json:
