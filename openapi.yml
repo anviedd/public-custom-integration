@@ -257,19 +257,19 @@ components:
               - shipping_address
             properties:
               total_amount:
-                type: number
+                type: string
                 example: 990
                 description: 合計金額
               total_product_amount:
-                type: number
+                type: string
                 example: 1000
                 description: 商品金額の合計
               total_discount_amount:
-                type: number
+                type: string
                 example: 100
                 description: 割引金額の合計
               total_tax_amount:
-                type: number
+                type: string
                 example: 90
                 description: 税の合計金額
               pre_discount_amount:
@@ -316,7 +316,7 @@ components:
               id:
                 type: string
                 example: 1234567
-                description: 本注文を特定できるユニークな注文ID
+                description: 注文ID
               order_number:
                 type: string
                 example: 1001
@@ -339,19 +339,19 @@ components:
                 description: "注文ステータス processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み、"
                 example: "processing"
               total_amount:
-                type: number
+                type: string
                 example: 990
                 description: 合計金額
               total_product_amount:
-                type: number
+                type: string
                 example: 1000
                 description: 商品金額の合計
               total_discount_amount:
-                type: number
+                type: string
                 example: 100
                 description: 割引金額の合計
               total_tax_amount:
-                type: number
+                type: string
                 example: 90
                 description: 税の合計金額
               pre_discount_amount:
@@ -462,13 +462,13 @@ components:
             ]
           description: "processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み、"
         total_amount:
-          type: number
+          type: string
         total_product_amount:
-          type: number
+          type: string
         total_discount_amount:
-          type: number
+          type: string
         total_tax_amount:
-          type: number
+          type: string
         pre_discount_amount:
           type: string
           example: 1100
@@ -527,15 +527,15 @@ components:
           example: 990
           description: 合計金額
         product_amount:
-          type: number
+          type: string
           example: 1000
           description: 商品の金額の合計
         discount_amount:
-          type: number
+          type: string
           example: 100
           description: 割引額の合計
         tax_amount:
-          type: number
+          type: string
           example: 90
           description: 税の合計
         pre_discount_amount:
@@ -594,6 +594,7 @@ components:
 
     Address:
       type: object
+      description: 住所情報
       required:
         - country
         - postal_code
@@ -608,20 +609,26 @@ components:
         postal_code:
           type: string
           example: "1010024"
+          description: 郵便番号
         province:
           type: string
           example: "東京都"
+          description: 都道府県
         city:
           type: string
           example: "千代田区"
+          description: 市区町村
         street1:
           type: string
           example: "神田和泉町1-8-11"
+          description: 住所情報1
         street2:
           type: string
           example: "サン・センタービル5F"
+          description: 住所情報2
     ShippingAddress:
       type: object
+      description: 発送先住所
       required:
         - full_name
         - address
@@ -686,6 +693,7 @@ components:
         $ref: "#/components/schemas/Variant"
     Variant:
       type: object
+      description: バリエーション情報
       required:
         - quantity_in_stock
         - name
@@ -722,6 +730,7 @@ components:
           description: 設定されているオプション情報
     Customer:
       type: object
+      description: 顧客情報
       required:
         - email
         - full_name
