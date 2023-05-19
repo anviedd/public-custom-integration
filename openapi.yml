@@ -501,12 +501,15 @@ components:
         id:
           type: integer
           example: 1000
+          description: ラインアイテムID
         product_id:
           type: string
           example: "product_id"
+          description: 商品ID
         product_name:
           type: string
           example: "テスト商品"
+          description: 商品名
         variant_id:
           type: string
           example: "2538974832789"
@@ -514,9 +517,11 @@ components:
         sku:
           type: string
           example: "product_id_S_Red"
+          description: SKU
         item_image:
           type: string
           example: "https://recustomer.me/image/12345"
+          description: 商品画像
         total_amount:
           type: string
           example: 990
@@ -544,24 +549,28 @@ components:
         quantity:
           type: number
           example: 1
+          description: 商品数量
         fulfillment_status:
           type: string
           enum: ["null", "fulfilled", "partial", "not_eligible"]
-          description: "null: 未発送、fulfilled: 発送済み, partial: 一部発送済み, not_eligible: 発送対象外"
+          description: "発送状況 null: 未発送、fulfilled: 発送済み, partial: 一部発送済み, not_eligible: 発送対象外"
         variant_options:
           type: array
           items:
             $ref: "#/components/schemas/OrderLineItemOption"
+          description: バリエーションのオプション
         product_tags:
           type: array
           items:
             type: string
             example: ["test", "sample"]
+          description: 商品タグ
         product_collections:
           type: array
           items:
             type: string
             example: ["食品", "テストコレクション"]
+          description: 商品コレクション
         product_supplier:
           type: string
           example: "テスト店舗"
@@ -620,20 +629,26 @@ components:
         first_name:
           type: string
           example: "太郎"
+          description: 名
         last_name:
           type: string
           example: "佐藤"
+          description: 姓
         full_name:
           type: string
           example: "佐藤 太郎"
+          description: 姓名
         email:
           type: string
           example: "test@recustomer.co"
+          description: メールアドレス
         phone_number:
           type: string
           example: "000-####-####"
+          description: 電話番号
         address:
           $ref: "#/components/schemas/Address"
+          description: 住所情報
     Products:
       type: array
       items:
@@ -714,6 +729,7 @@ components:
         email:
           type: string
           example: "test@recustomer.co"
+          description: メールアドレス
         last_name:
           type: string
           nullable: true
@@ -749,6 +765,7 @@ components:
           items:
             type: string
             example: ["test顧客", "一般会員"]
+          description: 顧客タグ
     Created_at:
       type: string
       example: "2023-05-10T12:00:00+09:00"
@@ -762,21 +779,27 @@ components:
       properties:
         id:
           type: integer
+          example: 1
+          description: 発送情報ID
         status:
           type: string
           enum: ["pending", "open", "success", "cancelled", "failure"]
-          description: "pending: 保留中、open: 処理中、success: 処理成功、cancelled: キャンセル、failure: 処理失敗"
+          description: "発送状況 pending: 保留中、open: 処理中、success: 処理成功、cancelled: キャンセル、failure: 処理失敗"
         tracking_company:
           type: string
+          example: 佐川急便
+          description: 配送会社
         tracking_number:
           type: array
           items:
             type: string
             example: ["4983892", "7348974"]
+          description: 配送番号
         fulfillment_line_items:
           type: array
           items:
             $ref: "#/components/schemas/FulfillmentLineItems"
+          description: 発送商品
         created_at:
           $ref: "#/components/schemas/Created_at"
         updated_at:
@@ -786,11 +809,15 @@ components:
       properties:
         id:
           type: integer
+          example: 1
+          description: 発送商品ID
         order_line_item_id:
           type: integer
+          example: 1
           description: 発送された商品のline_item_id
         quantity:
           type: integer
+          example: 2
           description: 配送済みの商品数
     OrderTransaction:
       type: object
@@ -803,21 +830,30 @@ components:
       properties:
         id:
           type: integer
+          example: 2
+          description: トランザクションID
         parent_id:
           type: integer
+          example: 1
+          description: 紐づく親トランザクションID
         amount:
-          type: number
+          type: string
+          example: 1000
+          description: 取引金額
         currency:
           type: string
           example: "JPY"
+          description: 通過単位
         status:
           type: string
           enum: ["success", "failure", "pending"]
-          description: "success: 成功、failure: 失敗、pending: 保留"
+          description: "取引ステータス success: 成功、failure: 失敗、pending: 保留"
         # type:
         #   type: string
         gateway:
           type: string
+          description: 取引ゲートウェイ
+          example: manual
         created_at:
           $ref: "#/components/schemas/Created_at"
         updated_at:
