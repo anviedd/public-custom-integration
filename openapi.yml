@@ -312,6 +312,7 @@ components:
               - fulfillments
               - transactions
               - created_at
+              - fulfillment_status
             properties:
               id:
                 type: string
@@ -342,7 +343,21 @@ components:
                 type: string
                 enum: ["fulfilled", "null", "partial"]
                 description: "発送ステータス fulfilled: 発送済み、null: 未発送、partial: 一部発送済み"
-                example: "processing"
+                example: "fulfilled"
+              financial_status:
+                type: string
+                enum:
+                  [
+                    "pending",
+                    "authorized",
+                    "partially_paid",
+                    "paid",
+                    "partially_refunded",
+                    "refunded",
+                    "voided",
+                  ]
+                description: "支払いステータス pending: 保留中、authorized: 認証済み、partially_paid: 一部支払い済み、paid: 支払い済み、partially_refunded: 一部返金済み、refunded: 返金済み、voided: 無効"
+                example: "paid"
               total_amount:
                 type: string
                 example: 990
