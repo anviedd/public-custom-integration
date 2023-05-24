@@ -255,6 +255,9 @@ components:
               - tax_amount
               - currency
               - shipping_address
+              - recustomer_request_id
+              - billing_address
+              - customer
             properties:
               total_amount:
                 type: string
@@ -298,6 +301,10 @@ components:
               customer:
                 $ref: "#/components/schemas/CustomerPost"
                 description: 顧客情報
+              recustomer_request_id:
+                type: string
+                example: "#1001"
+                description: Recustomerの返品リクエスト申請ID
     OrderImporter:
       content:
         application/json:
@@ -315,6 +322,7 @@ components:
               - customer
               - line_items
               - shipping_address
+              - billing_address
               - fulfillments
               - transactions
               - created_at
@@ -690,7 +698,7 @@ components:
           description: 住所情報
     BillingAddress:
       type: object
-      description: 配送住所
+      description: 請求住所
       required:
         - full_name
         - address
