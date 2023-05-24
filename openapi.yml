@@ -48,7 +48,7 @@ paths:
     post:
       tags:
         - "module1: Order importer"
-      summary: order importer
+      summary: Order Importer
       description: 注文情報をRecustomerに送信します。支払いが完了した注文をRecustomerに送信してください。
       parameters:
         - $ref: "#/components/parameters/StoreKey"
@@ -92,7 +92,7 @@ paths:
     get:
       tags:
         - "module2: Exchange"
-      summary: get products variants
+      summary: Get Product Variants
       description: 商品情報を取得します
       parameters:
         - $ref: "#/components/parameters/ProductId"
@@ -108,7 +108,7 @@ paths:
     post:
       tags:
         - "module2: Exchange"
-      summary: post order
+      summary: Create Exchange Order
       description: 注文情報を作成します
       parameters:
         - $ref: "#/components/parameters/Token"
@@ -149,7 +149,7 @@ paths:
     post:
       tags:
         - "module3: Cancel"
-      summary: cancel order
+      summary: Cancel Order
       description: 注文情報をキャンセルします
       parameters:
         - $ref: "#/components/parameters/Token"
