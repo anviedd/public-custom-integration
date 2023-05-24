@@ -291,7 +291,13 @@ components:
                 description: 注文商品
               shipping_address:
                 $ref: "#/components/schemas/ShippingAddress"
-                description: 発送先住所
+                description: 配送住所
+              billing_address:
+                $ref: "#/components/schemas/BillingAddress"
+                description: 請求住所
+              customer:
+                $ref: "#/components/schemas/CustomerPost"
+                description: 顧客情報
     OrderImporter:
       content:
         application/json:
@@ -415,7 +421,10 @@ components:
                 description: 注文商品
               shipping_address:
                 $ref: "#/components/schemas/ShippingAddress"
-                description: 発送先住所
+                description: 配送住所
+              billing_address:
+                $ref: "#/components/schemas/BillingAddress"
+                description: 請求住所
               fulfillments:
                 type: array
                 items:
@@ -595,6 +604,9 @@ components:
           type: string
           example: "テスト店舗"
           description: 販売元
+        custom_properties:
+          type: object
+          description: 独自で設定したいカラム情報
 
     OrderLineItemOption:
       type: object
@@ -648,7 +660,37 @@ components:
           description: 住所情報2
     ShippingAddress:
       type: object
-      description: 発送先住所
+      description: 配送住所
+      required:
+        - full_name
+        - address
+      properties:
+        first_name:
+          type: string
+          example: "太郎"
+          description: 名
+        last_name:
+          type: string
+          example: "佐藤"
+          description: 姓
+        full_name:
+          type: string
+          example: "佐藤 太郎"
+          description: 姓名
+        email:
+          type: string
+          example: "test@recustomer.co"
+          description: メールアドレス
+        phone_number:
+          type: string
+          example: "000-####-####"
+          description: 電話番号
+        address:
+          $ref: "#/components/schemas/Address"
+          description: 住所情報
+    BillingAddress:
+      type: object
+      description: 配送住所
       required:
         - full_name
         - address
@@ -795,6 +837,33 @@ components:
             type: string
             example: ["test顧客", "一般会員"]
           description: 顧客タグ
+    CustomerPost:
+      type: object
+      description: 顧客情報
+      properties:
+        email:
+          type: string
+          example: "test@recustomer.co"
+          description: メールアドレス
+        last_name:
+          type: string
+          nullable: true
+          example: "佐藤"
+          description: 姓
+        first_name:
+          type: string
+          nullable: true
+          example: "太郎"
+          description: 名
+        full_name:
+          type: string
+          example: "佐藤 太郎"
+          description: 姓名
+        phone_number:
+          type: string
+          example: "000-####-####"
+          description: 電話番号
+
     Created_at:
       type: string
       example: "2023-05-10T12:00:00+09:00"
