@@ -258,6 +258,7 @@ components:
               - recustomer_request_id
               - billing_address
               - customer
+              - is_tax_included
             properties:
               total_amount:
                 type: string
@@ -327,6 +328,9 @@ components:
               - transactions
               - created_at
               - fulfillment_status
+              - is_tax_included
+              - quantity
+              - financial_status
             properties:
               id:
                 type: string
@@ -534,6 +538,7 @@ components:
         - discount_amount
         - tax_amount
         - fulfillment_status
+        - is_tax_included
       properties:
         id:
           type: integer
