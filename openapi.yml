@@ -249,10 +249,14 @@ components:
             type: object
             required:
               - line_items
-              - total_amount
-              - product_amount
-              - discount_amount
-              - tax_amount
+              - order_discount_price
+              - order_point_price
+              - total_item_discount_amount
+              - subtotal_price
+              - total_shipping_price
+              - total_discount
+              - total_price
+              - total_tax
               - currency
               - shipping_address
               - recustomer_request_id
@@ -260,26 +264,22 @@ components:
               - customer
               - is_tax_included
             properties:
-              total_amount:
-                type: string
-                example: 990
-                description: 合計金額
-              total_product_amount:
-                type: string
-                example: 1000
-                description: 商品金額の合計
-              total_discount_amount:
-                type: string
-                example: 100
-                description: 割引金額の合計
-              total_tax_amount:
-                type: string
-                example: 90
-                description: 税の合計金額
-              pre_discount_amount:
-                type: string
-                example: 1100
-                description: 割引前商品価格(税込)の合計
+              order_discount_price:
+                $ref: "#/components/schemas/OrderDiscountPrice"
+              order_point_price:
+                $ref: "#/components/schemas/OrderPointPrice"
+              total_item_discount_amount:
+                $ref: "#/components/schemas/TotalItemDiscountAmount"
+              subtotal_price:
+                $ref: "#/components/schemas/SubtotalPrice"
+              total_shipping_price:
+                $ref: "#/components/schemas/TotalShippingPrice"
+              total_discount:
+                $ref: "#/components/schemas/TotalDiscount"
+              total_price:
+                $ref: "#/components/schemas/TotalPrice"
+              total_tax:
+                $ref: "#/components/schemas/TotalTax"
               is_tax_included:
                 type: boolean
                 example: true
@@ -315,10 +315,14 @@ components:
               - id
               - order_number
               - status
-              - total_amount
-              - total_product_amount
-              - total_discount_amount
-              - total_tax_amount
+              - order_discount_price
+              - order_point_price
+              - total_item_discount_amount
+              - subtotal_price
+              - total_shipping_price
+              - total_discount
+              - total_price
+              - total_tax
               - currency
               - customer
               - line_items
@@ -376,30 +380,46 @@ components:
                   ]
                 description: "支払いステータス pending: 保留中、authorized: 認証済み、partially_paid: 一部支払い済み、paid: 支払い済み、partially_refunded: 一部返金済み、refunded: 返金済み、voided: 無効"
                 example: "paid"
-              total_amount:
-                type: string
-                example: 990
-                description: 合計金額
-              total_product_amount:
-                type: string
-                example: 1000
-                description: 商品金額の合計
-              total_discount_amount:
-                type: string
-                example: 100
-                description: 割引金額の合計
-              total_tax_amount:
-                type: string
-                example: 90
-                description: 税の合計金額
-              pre_discount_amount:
-                type: string
-                example: 1100
-                description: 割引前商品価格(税込)の合計
+              # total_amount:
+              #   type: string
+              #   example: 990
+              #   description: 合計金額
+              # total_product_amount:
+              #   type: string
+              #   example: 1000
+              #   description: 商品金額の合計
+              # total_discount_amount:
+              #   type: string
+              #   example: 100
+              #   description: 割引金額の合計
+              # total_tax_amount:
+              #   type: string
+              #   example: 90
+              #   description: 税の合計金額
+              # pre_discount_amount:
+              #   type: string
+              #   example: 1100
+              #   description: 割引前商品価格(税込)の合計
+              order_discount_price:
+                $ref: "#/components/schemas/OrderDiscountPrice"
+              order_point_price:
+                $ref: "#/components/schemas/OrderPointPrice"
+              total_item_discount_amount:
+                $ref: "#/components/schemas/TotalItemDiscountAmount"
+              subtotal_price:
+                $ref: "#/components/schemas/SubtotalPrice"
+              total_shipping_price:
+                $ref: "#/components/schemas/TotalShippingPrice"
+              total_discount:
+                $ref: "#/components/schemas/TotalDiscount"
+              total_price:
+                $ref: "#/components/schemas/TotalPrice"
+              total_tax:
+                $ref: "#/components/schemas/TotalTax"
               is_tax_included:
                 type: boolean
                 example: true
-                description: total_amountが税を含む金額か
+                description: total_priceが税を含む金額か
               currency:
                 type: string
                 example: "JPY"
@@ -533,10 +553,13 @@ components:
         - quantity
         - product_id
         - sku
-        - total_amount
-        - product_amount
-        - discount_amount
-        - tax_amount
+        - item_discount_price
+        - item_discount_amount
+        - item_price
+        - item_compare_at_price
+        - item_quantity
+        - item_price_amount
+        - item_tax_price
         - fulfillment_status
         - is_tax_included
       properties:
@@ -564,34 +587,44 @@ components:
           type: string
           example: "https://recustomer.me/image/12345"
           description: 商品画像
-        total_amount:
-          type: string
-          example: 990
-          description: 合計金額
-        product_amount:
-          type: string
-          example: 1000
-          description: 商品の金額の合計
-        discount_amount:
-          type: string
-          example: 100
-          description: 割引額の合計
-        tax_amount:
-          type: string
-          example: 90
-          description: 税の合計
-        pre_discount_amount:
-          type: string
-          example: 1100
-          description: 割引前商品価格(税込)の合計
+        # total_amount:
+        #   type: string
+        #   example: 990
+        #   description: 合計金額
+        # product_amount:
+        #   type: string
+        #   example: 1000
+        #   description: 商品の金額の合計
+        # discount_amount:
+        #   type: string
+        #   example: 100
+        #   description: 割引額の合計
+        # tax_amount:
+        #   type: string
+        #   example: 90
+        #   description: 税の合計
+        # pre_discount_amount:
+        #   type: string
+        #   example: 1100
+        #   description: 割引前商品価格(税込)の合計
+        item_discount_price:
+          $ref: "#/components/schemas/ItemDiscountPrice"
+        item_discount_amount:
+          $ref: "#/components/schemas/ItemDiscountAmount"
+        item_price:
+          $ref: "#/components/schemas/ItemPrice"
+        item_compare_at_price:
+          $ref: "#/components/schemas/ItemCompareAtPrice"
+        item_quantity:
+          $ref: "#/components/schemas/ItemQuantity"
+        item_price_amount:
+          $ref: "#/components/schemas/ItemPriceAmount"
+        item_tax_price:
+          $ref: "#/components/schemas/ItemTaxPrice"
         is_tax_included:
           type: boolean
           example: true
-          description: total_amountが税を含む金額か
-        quantity:
-          type: number
-          example: 1
-          description: 商品数量
+          description: item_price_amountが税を含む金額か
         fulfillment_status:
           type: string
           enum: ["null", "fulfilled", "partial", "not_eligible"]
@@ -1004,3 +1037,63 @@ components:
           type: string
           example: "Internal Server Error"
           description: "エラー詳細が格納されます(Recustomerにエラーが発生している可能性がございます。お手数ですがお問合せください)"
+    OrderDiscountPrice:
+      type: string
+      description: "注文に対してのディスカウント"
+      example: 100
+    OrderPointPrice:
+      type: string
+      description: "注文に対してのポイント利用"
+      example: 100
+    TotalItemDiscountAmount:
+      type: string
+      description: "商品ディスカウント合計"
+      example: 100
+    SubtotalPrice:
+      type: string
+      description: "商品小計"
+      example: 100
+    TotalShippingPrice:
+      type: string
+      description: "注文時の送料"
+      example: 100
+    TotalDiscount:
+      type: string
+      description: "ディスカウント合計（order_discount_price+order_point_price+total_item_discount_amount）"
+      example: 100
+    TotalPrice:
+      type: string
+      description: "注文に対してのポイント利用"
+      example: 100
+    TotalTax:
+      type: string
+      description: "税"
+      example: 100
+    ItemDiscountPrice:
+      type: string
+      description: "商品に対してのディスカウント"
+      example: 100
+    ItemDiscountAmount:
+      type: string
+      description: "商品のディスカウント合計"
+      example: 100
+    ItemPrice:
+      type: string
+      description: "商品の販売価格"
+      example: 100
+    ItemCompareAtPrice:
+      type: string
+      description: "商品の定価"
+      example: 100
+    ItemQuantity:
+      type: string
+      description: "商品の数量"
+      example: 1
+    ItemPriceAmount:
+      type: string
+      description: "商品の販売価格合計"
+      example: 100
+    ItemTaxPrice:
+      type: string
+      description: "税"
+      example: 100
