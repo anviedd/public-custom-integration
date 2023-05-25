@@ -423,7 +423,7 @@ components:
               currency:
                 type: string
                 example: "JPY"
-                description: 通過単位
+                description: 通貨単位
               quantity:
                 type: integer
                 example: 3
