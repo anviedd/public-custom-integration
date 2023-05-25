@@ -936,7 +936,7 @@ components:
           $ref: "#/components/schemas/Created_at"
         updated_at:
           $ref: "#/components/schemas/Updated_at"
-        options:
+        variant_options:
           type: array
           items:
             $ref: "#/components/schemas/OrderLineItemOption"
