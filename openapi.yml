@@ -43,9 +43,17 @@ info:
   # x-logo:
   #   url: notion://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8ca291eb-759d-481b-bfbf-84aaa2bdd17d%2Flogo.png?id=0e6b1637-ed44-4e39-92a4-d4d5761b4c6e&table=block&spaceId=ee6cace2-9eea-4a9c-81f3-1a646693f604&width=2000&userId=b3b4ab11-cac2-4a93-97c3-7a0e7ea25879&cache=v2
 
+servers:
+  - url: "https://your_server_address"
+
 paths:
   /orders/import:
     post:
+      servers:
+        - url: "https://integration.prod.recustomer.me/external"
+          description: 本番
+        - url: "https://integration.sandbox.recustomer.me/external"
+          description: 開発
       tags:
         - "module1: Order importer"
       summary: Order Importer
