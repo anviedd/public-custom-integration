@@ -8,7 +8,7 @@ info:
     ### Module1: Order importer
     マーチャントで注文が作成または更新された際に、Recustomerに注文情報を送信する必要があります。
     ### Module2: Exchange
-    商品の在庫情報をReucustomerに提供します。また、Recustomer上で作成された注文情報をマーチャントに送信します。
+    商品の在庫情報をRecustomerに提供します。また、Recustomer上で作成された注文情報をマーチャントに送信します。
     ### Module3: Cancel
     Recustomerでキャンセルされた注文情報をマーチャントに送信します。
     # Authentication
