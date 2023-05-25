@@ -287,7 +287,7 @@ components:
               currency:
                 type: string
                 example: "JPY"
-                description: 通過単位
+                description: 通貨単位
               line_items:
                 type: array
                 items:
@@ -449,7 +449,7 @@ components:
               line_items:
                 type: array
                 items:
-                  $ref: "#/components/schemas/OrderLineItem"
+                  $ref: "#/components/schemas/OrderLineItemImporter"
                 description: 注文商品
               shipping_address:
                 $ref: "#/components/schemas/ShippingAddress"
@@ -546,7 +546,7 @@ components:
           $ref: "#/components/schemas/ShippingAddress"
         # billing_address:
         #   $ref: "#/components/schemas/BillingAddress"
-    OrderLineItem:
+    OrderLineItemImporter:
       type: object
       required:
         - id
@@ -654,6 +654,111 @@ components:
           type: object
           description: 独自で設定したいカラム情報
 
+    OrderLineItem:
+      type: object
+      required:
+        - id
+        - quantity
+        - product_id
+        - sku
+        - item_discount_price
+        - item_discount_amount
+        - item_price
+        - item_compare_at_price
+        - item_quantity
+        - item_price_amount
+        - item_tax_price
+        - fulfillment_status
+        - is_tax_included
+      properties:
+        id:
+          type: integer
+          example: 1000
+          description: ラインアイテムID
+        product_id:
+          type: string
+          example: "product_id"
+          description: 商品ID
+        product_name:
+          type: string
+          example: "テスト商品"
+          description: 商品名
+        variant_id:
+          type: string
+          example: "2538974832789"
+          description: バリエーションID
+        sku:
+          type: string
+          example: "product_id_S_Red"
+          description: SKU
+        item_image:
+          type: string
+          example: "https://recustomer.me/image/12345"
+          description: 商品画像
+        # total_amount:
+        #   type: string
+        #   example: 990
+        #   description: 合計金額
+        # product_amount:
+        #   type: string
+        #   example: 1000
+        #   description: 商品の金額の合計
+        # discount_amount:
+        #   type: string
+        #   example: 100
+        #   description: 割引額の合計
+        # tax_amount:
+        #   type: string
+        #   example: 90
+        #   description: 税の合計
+        # pre_discount_amount:
+        #   type: string
+        #   example: 1100
+        #   description: 割引前商品価格(税込)の合計
+        item_discount_price:
+          $ref: "#/components/schemas/ItemDiscountPrice"
+        item_discount_amount:
+          $ref: "#/components/schemas/ItemDiscountAmount"
+        item_price:
+          $ref: "#/components/schemas/ItemPrice"
+        item_compare_at_price:
+          $ref: "#/components/schemas/ItemCompareAtPrice"
+        item_quantity:
+          $ref: "#/components/schemas/ItemQuantity"
+        item_price_amount:
+          $ref: "#/components/schemas/ItemPriceAmount"
+        item_tax_price:
+          $ref: "#/components/schemas/ItemTaxPrice"
+        is_tax_included:
+          type: boolean
+          example: true
+          description: item_price_amountが税を含む金額か
+        fulfillment_status:
+          type: string
+          enum: ["null", "fulfilled", "partial", "not_eligible"]
+          description: "発送状況 null: 未発送、fulfilled: 発送済み, partial: 一部発送済み, not_eligible: 発送対象外"
+        variant_options:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderLineItemOption"
+          description: バリエーションのオプション
+        product_tags:
+          type: array
+          items:
+            type: string
+            example: ["test", "sample"]
+          description: 商品タグ
+        product_collections:
+          type: array
+          items:
+            type: string
+            example: ["食品", "テストコレクション"]
+          description: 商品コレクション
+        product_supplier:
+          type: string
+          example: "テスト店舗"
+          description: 販売元
+
     OrderLineItemOption:
       type: object
       required:
@@ -696,17 +801,17 @@ components:
           type: string
           example: "千代田区"
           description: 市区町村
-        street1:
+        address1:
           type: string
           example: "神田和泉町1-8-11"
           description: 住所情報1
-        street2:
+        address2:
           type: string
           example: "サン・センタービル5F"
           description: 住所情報2
     ShippingAddress:
       type: object
-      description: 配送住所
+      description: 配送先住所
       required:
         - full_name
         - address
@@ -736,7 +841,7 @@ components:
           description: 住所情報
     BillingAddress:
       type: object
-      description: 請求住所
+      description: 請求先住所
       required:
         - full_name
         - address
@@ -938,7 +1043,7 @@ components:
           items:
             type: string
             example: ["4983892", "7348974"]
-          description: 配送番号
+          description: 追跡番号
         fulfillment_line_items:
           type: array
           items:
@@ -987,7 +1092,7 @@ components:
         currency:
           type: string
           example: "JPY"
-          description: 通過単位
+          description: 通貨単位
         status:
           type: string
           enum: ["success", "failure", "pending"]
@@ -1063,7 +1168,7 @@ components:
       example: 100
     TotalPrice:
       type: string
-      description: "注文に対してのポイント利用"
+      description: "合計金額"
       example: 100
     TotalTax:
       type: string
