@@ -128,7 +128,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostRequestSuccessResponse"
+                $ref: "#/components/schemas/OrderBase"
         "400":
           description: Bad request
           content:
@@ -318,166 +318,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            required:
-              - id
-              - order_number
-              - status
-              - order_discount_price
-              - order_point_price
-              - total_item_discount_amount
-              - subtotal_price
-              - total_shipping_price
-              - total_discount
-              - total_price
-              - total_tax
-              - currency
-              - customer
-              - line_items
-              - shipping_address
-              - billing_address
-              - fulfillments
-              - transactions
-              - created_at
-              - fulfillment_status
-              - is_tax_included
-              - quantity
-              - financial_status
-            properties:
-              id:
-                type: string
-                example: 1234567
-                description: 注文ID
-              order_number:
-                type: string
-                example: 1001
-                description: 注文番号
-              status:
-                type: string
-                # TODO: ステータスの内容は検討
-                enum:
-                  [
-                    "processing",
-                    "returned",
-                    "refunded",
-                    "shipped",
-                    "partional_returned",
-                    "partional_refunded",
-                    "partional_shipped",
-                    "canceled",
-                    "partional_canceled",
-                  ]
-                description: "注文ステータス processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み"
-                example: "processing"
-              fulfillment_status:
-                type: string
-                enum: ["fulfilled", "null", "partial"]
-                description: "発送ステータス fulfilled: 発送済み、null: 未発送、partial: 一部発送済み"
-                example: "fulfilled"
-              financial_status:
-                type: string
-                enum:
-                  [
-                    "pending",
-                    "authorized",
-                    "partially_paid",
-                    "paid",
-                    "partially_refunded",
-                    "refunded",
-                    "voided",
-                  ]
-                description: "支払いステータス pending: 保留中、authorized: 認証済み、partially_paid: 一部支払い済み、paid: 支払い済み、partially_refunded: 一部返金済み、refunded: 返金済み、voided: 無効"
-                example: "paid"
-              # total_amount:
-              #   type: string
-              #   example: 990
-              #   description: 合計金額
-              # total_product_amount:
-              #   type: string
-              #   example: 1000
-              #   description: 商品金額の合計
-              # total_discount_amount:
-              #   type: string
-              #   example: 100
-              #   description: 割引金額の合計
-              # total_tax_amount:
-              #   type: string
-              #   example: 90
-              #   description: 税の合計金額
-              # pre_discount_amount:
-              #   type: string
-              #   example: 1100
-              #   description: 割引前商品価格(税込)の合計
-              order_discount_price:
-                $ref: "#/components/schemas/OrderDiscountPrice"
-              order_point_price:
-                $ref: "#/components/schemas/OrderPointPrice"
-              total_item_discount_amount:
-                $ref: "#/components/schemas/TotalItemDiscountAmount"
-              subtotal_price:
-                $ref: "#/components/schemas/SubtotalPrice"
-              total_shipping_price:
-                $ref: "#/components/schemas/TotalShippingPrice"
-              total_discount:
-                $ref: "#/components/schemas/TotalDiscount"
-              total_price:
-                $ref: "#/components/schemas/TotalPrice"
-              total_tax:
-                $ref: "#/components/schemas/TotalTax"
-              is_tax_included:
-                type: boolean
-                example: true
-                description: total_priceが税を含む金額か
-              currency:
-                type: string
-                example: "JPY"
-                description: 通貨単位
-              quantity:
-                type: integer
-                example: 3
-                description: 注文商品数の合計
-              created_at:
-                $ref: "#/components/schemas/Created_at"
-              updated_at:
-                $ref: "#/components/schemas/Updated_at"
-              order_tags:
-                type: array
-                items:
-                  type: string
-                  example: ["テスト注文"]
-                description: 注文タグ
-              note:
-                type: string
-                example: "テスト注文"
-                description: 注文の補足情報
-
-              customer:
-                $ref: "#/components/schemas/Customer"
-                description: 顧客情報
-              line_items:
-                type: array
-                items:
-                  $ref: "#/components/schemas/OrderLineItemImporter"
-                description: 注文商品
-              shipping_address:
-                $ref: "#/components/schemas/ShippingAddress"
-                description: 配送住所
-              billing_address:
-                $ref: "#/components/schemas/BillingAddress"
-                description: 請求住所
-              fulfillments:
-                type: array
-                items:
-                  $ref: "#/components/schemas/OrderFulfillment"
-                description: 発送情報
-              transactions:
-                type: array
-                items:
-                  $ref: "#/components/schemas/OrderTransaction"
-                description: 金額情報
-              custom_properties:
-                type: object
-                description: 独自で設定したいカラム情報
+            $ref: "#/components/schemas/OrderBase"
     OrderCancel:
       content:
         application/json:
@@ -1210,3 +1051,164 @@ components:
       type: string
       description: "税"
       example: 100
+    OrderBase:
+      type: object
+      required:
+        - id
+        - order_number
+        - status
+        - order_discount_price
+        - order_point_price
+        - total_item_discount_amount
+        - subtotal_price
+        - total_shipping_price
+        - total_discount
+        - total_price
+        - total_tax
+        - currency
+        - customer
+        - line_items
+        - shipping_address
+        - billing_address
+        - fulfillments
+        - transactions
+        - created_at
+        - fulfillment_status
+        - is_tax_included
+        - quantity
+        - financial_status
+      properties:
+        id:
+          type: string
+          example: 1234567
+          description: 注文ID
+        order_number:
+          type: string
+          example: 1001
+          description: 注文番号
+        status:
+          type: string
+          # TODO: ステータスの内容は検討
+          enum:
+            [
+              "processing",
+              "returned",
+              "refunded",
+              "shipped",
+              "partional_returned",
+              "partional_refunded",
+              "partional_shipped",
+              "canceled",
+              "partional_canceled",
+            ]
+          description: "注文ステータス processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み"
+          example: "processing"
+        fulfillment_status:
+          type: string
+          enum: ["fulfilled", "null", "partial"]
+          description: "発送ステータス fulfilled: 発送済み、null: 未発送、partial: 一部発送済み"
+          example: "fulfilled"
+        financial_status:
+          type: string
+          enum:
+            [
+              "pending",
+              "authorized",
+              "partially_paid",
+              "paid",
+              "partially_refunded",
+              "refunded",
+              "voided",
+            ]
+          description: "支払いステータス pending: 保留中、authorized: 認証済み、partially_paid: 一部支払い済み、paid: 支払い済み、partially_refunded: 一部返金済み、refunded: 返金済み、voided: 無効"
+          example: "paid"
+        # total_amount:
+        #   type: string
+        #   example: 990
+        #   description: 合計金額
+        # total_product_amount:
+        #   type: string
+        #   example: 1000
+        #   description: 商品金額の合計
+        # total_discount_amount:
+        #   type: string
+        #   example: 100
+        #   description: 割引金額の合計
+        # total_tax_amount:
+        #   type: string
+        #   example: 90
+        #   description: 税の合計金額
+        # pre_discount_amount:
+        #   type: string
+        #   example: 1100
+        #   description: 割引前商品価格(税込)の合計
+        order_discount_price:
+          $ref: "#/components/schemas/OrderDiscountPrice"
+        order_point_price:
+          $ref: "#/components/schemas/OrderPointPrice"
+        total_item_discount_amount:
+          $ref: "#/components/schemas/TotalItemDiscountAmount"
+        subtotal_price:
+          $ref: "#/components/schemas/SubtotalPrice"
+        total_shipping_price:
+          $ref: "#/components/schemas/TotalShippingPrice"
+        total_discount:
+          $ref: "#/components/schemas/TotalDiscount"
+        total_price:
+          $ref: "#/components/schemas/TotalPrice"
+        total_tax:
+          $ref: "#/components/schemas/TotalTax"
+        is_tax_included:
+          type: boolean
+          example: true
+          description: total_priceが税を含む金額か
+        currency:
+          type: string
+          example: "JPY"
+          description: 通貨単位
+        quantity:
+          type: integer
+          example: 3
+          description: 注文商品数の合計
+        created_at:
+          $ref: "#/components/schemas/Created_at"
+        updated_at:
+          $ref: "#/components/schemas/Updated_at"
+        order_tags:
+          type: array
+          items:
+            type: string
+            example: ["テスト注文"]
+          description: 注文タグ
+        note:
+          type: string
+          example: "テスト注文"
+          description: 注文の補足情報
+
+        customer:
+          $ref: "#/components/schemas/Customer"
+          description: 顧客情報
+        line_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderLineItemImporter"
+          description: 注文商品
+        shipping_address:
+          $ref: "#/components/schemas/ShippingAddress"
+          description: 配送住所
+        billing_address:
+          $ref: "#/components/schemas/BillingAddress"
+          description: 請求住所
+        fulfillments:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderFulfillment"
+          description: 発送情報
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderTransaction"
+          description: 金額情報
+        custom_properties:
+          type: object
+          description: 独自で設定したいカラム情報
