@@ -1,16 +1,26 @@
 openapi: 3.0.0
 info:
-  title: Recustomer Integration API
+  title: Custom Integration
   description: |-
     Recustomer API for Return and Cancel v2
     # Introduction
-    Integration APIは、Recustomerを利用するために必要な各種データを連携するためのAPIです。
-    ### Module1: Order importer
-    マーチャントで注文が作成または更新された際に、Recustomerに注文情報を送信する必要があります。
+    Custom Integrationは、Recustomerを利用するために必要な各種データを連携するためのAPIです。<br />
+    このCustom Integrationは、Order importerとintegration APIの2つの要素で構成されています。<br />
+    <br />
+    ### Module1: Order Importer
+    Order importer（Module1）は注文情報をMerchant環境からRecustomerに送信する役割を担っています。<br />
+    注文情報が作成・更新されるたびに、エンドポイントが呼び出され、Recustomerに送信する必要があります。<br />
+    <br />
+    Integration API（Module2,3）はRecustomerからMerchant環境の各システムへと通信を行うAPIです。<br />
+    RecustomerがMerchant環境へデータの更新やデータの取得をする必要がある場合に、このAPIを介して、Recustomerはデータの更新や取得を行います。<br />
+    <br />
     ### Module2: Exchange
-    商品の在庫情報をRecustomerに提供します。また、Recustomer上で作成された注文情報をマーチャントに送信します。
+    Exchangeモジュールは、交換を行う際に、商品のバリエーション情報や在庫情報をRecustomerが取得したり、交換商品の受注伝票をRecustomerが作成したりする場合に使用されます。<br />
+    <br />
     ### Module3: Cancel
-    Recustomerでキャンセルされた注文情報をマーチャントに送信します。
+    Cancelモジュールは、Recustomer上で注文のキャンセル処理が行われた際に、即座にその注文の出荷を停止するために使用されます。<br />
+    Custom Integrationは、Recustomerを利用するために必要な各種データを連携するためのAPIです。<br />
+
     # Authentication
     Recustomerからトークンとアクセスキーを提供します。それらのパラメータをAPIのheaderに含めて送信します。
     <table>
