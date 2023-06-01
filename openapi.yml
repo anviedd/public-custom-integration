@@ -364,13 +364,13 @@ components:
               "returned",
               "refunded",
               "shipped",
-              "partional_returned",
-              "partional_refunded",
-              "partional_shipped",
+              "partial_returned",
+              "partial_refunded",
+              "partial_shipped",
               "canceled",
-              "partional_canceled",
+              "partial_canceled",
             ]
-          description: "processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み、"
+          description: "processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partial_returned: 一部返品済み、partial_refunded: 一部返金済み、partial_shipped: 一部発送済み、canceled: キャンセル済み、partial_canceled"
         total_amount:
           type: string
         total_product_amount:
@@ -1095,13 +1095,13 @@ components:
               "returned",
               "refunded",
               "shipped",
-              "partional_returned",
-              "partional_refunded",
-              "partional_shipped",
+              "partial_returned",
+              "partial_refunded",
+              "partial_shipped",
               "canceled",
-              "partional_canceled",
+              "partial_canceled",
             ]
-          description: "注文ステータス processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partional_returned: 一部返品済み、partional_refunded: 一部返金済み、partional_shipped: 一部発送済み、canceled: 一部キャンセル済み"
+          description: "注文ステータス processing: 処理中、returned: 返品済み、refunded: 返金済み、shipped: 発送済み、partial_returned: 一部返品済み、partial_refunded: 一部返金済み、partial_shipped: 一部発送済み、canceled: 一部キャンセル済み"
           example: "processing"
         fulfillment_status:
           type: string
@@ -1158,6 +1158,10 @@ components:
           $ref: "#/components/schemas/TotalPrice"
         total_tax:
           $ref: "#/components/schemas/TotalTax"
+        payment_at:
+          type: string
+          example: "2023-05-10T12:00:00+09:00"
+          description: 入金日時
         is_tax_included:
           type: boolean
           example: true
