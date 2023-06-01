@@ -20,7 +20,8 @@ info:
     Cancelモジュールは、Recustomer上で注文のキャンセル処理が行われた際に、即座にその注文の出荷を停止するために使用されます。<br />
     Custom Integrationは、Recustomerを利用するために必要な各種データを連携するためのAPIです。<br />
 
-    # Authentication
+    # Authentication 
+    ### Order Importer（Module1）
     Recustomerからトークンとアクセスキーを提供します。それらのパラメータをAPIのheaderに含めて送信します。
     <table>
       <tr>
@@ -48,6 +49,10 @@ info:
         </td>
       </tr>
     </table>
+    ### Integration API（Module2,3）
+    マーチャント環境に<b>トークン認証</b>を実装する必要があります。<br />
+    Recustomerから「api_token」のキーでトークンをheaderに含めてマーチャント環境へAPIを送信します。<br />
+    アクセストークンはシステム連携画面にて、Recustomerに提供する必要があります。
   version: 1.0.0
   # x-logo:
   #   url: notion://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8ca291eb-759d-481b-bfbf-84aaa2bdd17d%2Flogo.png?id=0e6b1637-ed44-4e39-92a4-d4d5761b4c6e&table=block&spaceId=ee6cace2-9eea-4a9c-81f3-1a646693f604&width=2000&userId=b3b4ab11-cac2-4a93-97c3-7a0e7ea25879&cache=v2
@@ -113,7 +118,7 @@ paths:
       description: 交換の際に必要な商品情報、及び在庫情報を取得します
       parameters:
         - $ref: "#/components/parameters/ProductId"
-        - $ref: "#/components/parameters/Token"
+        - $ref: "#/components/parameters/IntegrationToken"
       responses:
         "200":
           description: successfully.
@@ -128,7 +133,7 @@ paths:
       summary: Create Exchange Order
       description: 注文情報を作成します
       parameters:
-        - $ref: "#/components/parameters/Token"
+        - $ref: "#/components/parameters/IntegrationToken"
       requestBody:
         $ref: "#/components/requestBodies/Order"
       responses:
@@ -169,7 +174,7 @@ paths:
       summary: Cancel Order
       description: 注文情報をキャンセルします
       parameters:
-        - $ref: "#/components/parameters/Token"
+        - $ref: "#/components/parameters/IntegrationToken"
       requestBody:
         $ref: "#/components/requestBodies/OrderCancel"
       responses:
@@ -246,6 +251,14 @@ components:
       in: header
       required: true
       description: 認証用トークン(Recustomerから提供します)
+      schema:
+        type: string
+      example: "X12345678"
+    IntegrationToken:
+      name: api_token
+      in: header
+      required: true
+      description: 認証用トークン
       schema:
         type: string
       example: "X12345678"
