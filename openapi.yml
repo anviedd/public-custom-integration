@@ -11,12 +11,11 @@ info:
     Order importer（Module1）は注文情報をMerchant環境からRecustomerに送信する役割を担っています。<br />
     注文情報が作成・更新されるたびに、エンドポイントが呼び出され、Recustomerに送信する必要があります。<br />
     <br />
+    ### Integration API
     Integration API（Module2,3）はRecustomerからMerchant環境の各システムへと通信を行うAPIです。<br />
     RecustomerがMerchant環境へデータの更新やデータの取得をする必要がある場合に、このAPIを介して、Recustomerはデータの更新や取得を行います。<br />
-    <br />
     ### Module2: Exchange
     Exchangeモジュールは、交換を行う際に、商品のバリエーション情報や在庫情報をRecustomerが取得したり、交換商品の受注伝票をRecustomerが作成したりする場合に使用されます。<br />
-    <br />
     ### Module3: Cancel
     Cancelモジュールは、Recustomer上で注文のキャンセル処理が行われた際に、即座にその注文の出荷を停止するために使用されます。<br />
     Custom Integrationは、Recustomerを利用するために必要な各種データを連携するためのAPIです。<br />
