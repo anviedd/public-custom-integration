@@ -53,7 +53,7 @@ info:
     ### Integration API（Module2,3）
     マーチャント環境に<b>トークン認証</b>を実装する必要があります。<br />
     Recustomerから「api_token」のキーでトークンをheaderに含めてマーチャント環境へAPIを送信します。<br />
-    アクセストークンはシステム連携画面にて、Recustomerに提供する必要があります。
+    アクセストークンは外部サービス連携画面にて、Recustomerに提供する必要があります。
   version: 1.0.0
   # x-logo:
   #   url: notion://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F8ca291eb-759d-481b-bfbf-84aaa2bdd17d%2Flogo.png?id=0e6b1637-ed44-4e39-92a4-d4d5761b4c6e&table=block&spaceId=ee6cace2-9eea-4a9c-81f3-1a646693f604&width=2000&userId=b3b4ab11-cac2-4a93-97c3-7a0e7ea25879&cache=v2
