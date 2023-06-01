@@ -49,6 +49,7 @@ info:
         </td>
       </tr>
     </table>
+
     ### Integration API（Module2,3）
     マーチャント環境に<b>トークン認証</b>を実装する必要があります。<br />
     Recustomerから「api_token」のキーでトークンをheaderに含めてマーチャント環境へAPIを送信します。<br />
