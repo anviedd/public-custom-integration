@@ -101,7 +101,7 @@ paths:
       tags:
         - "module2: Exchange"
       summary: Get Product Variants
-      description: 商品情報を取得します
+      description: 交換の際に必要な商品情報及び在庫情報を取得します
       parameters:
         - $ref: "#/components/parameters/ProductId"
         - $ref: "#/components/parameters/Token"
