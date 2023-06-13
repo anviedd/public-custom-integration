@@ -522,7 +522,7 @@ components:
           type: string
           example: "テスト店舗"
           description: 販売元
-        custom_properties:
+        metafields:
           type: object
           description: 独自で設定したいカラム情報
 
@@ -1231,6 +1231,6 @@ components:
           items:
             $ref: "#/components/schemas/OrderFulfillment"
           description: 発送情報
-        custom_properties:
+        metafields:
           type: object
           description: 独自で設定したいカラム情報
