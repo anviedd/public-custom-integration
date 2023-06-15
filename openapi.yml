@@ -506,22 +506,22 @@ components:
           items:
             $ref: "#/components/schemas/OrderLineItemOption"
           description: バリエーションのオプション
-        product_tags:
-          type: array
-          items:
-            type: string
-            example: ["test", "sample"]
-          description: 商品タグ
-        product_collections:
-          type: array
-          items:
-            type: string
-            example: ["食品", "テストコレクション"]
-          description: 商品コレクション
-        product_supplier:
-          type: string
-          example: "テスト店舗"
-          description: 販売元
+        # product_tags:
+        #   type: array
+        #   items:
+        #     type: string
+        #     example: ["test", "sample"]
+        #   description: 商品タグ
+        # product_collections:
+        #   type: array
+        #   items:
+        #     type: string
+        #     example: ["食品", "テストコレクション"]
+        #   description: 商品コレクション
+        # product_supplier:
+        #   type: string
+        #   example: "テスト店舗"
+        #   description: 販売元
         metafields:
           type: object
           description: 独自で設定したいカラム情報
@@ -1201,12 +1201,12 @@ components:
           $ref: "#/components/schemas/Created_at"
         updated_at:
           $ref: "#/components/schemas/Updated_at"
-        order_tags:
-          type: array
-          items:
-            type: string
-            example: ["テスト注文"]
-          description: 注文タグ
+        # order_tags:
+        #   type: array
+        #   items:
+        #     type: string
+        #     example: ["テスト注文"]
+        #   description: 注文タグ
         note:
           type: string
           example: "テスト注文"
