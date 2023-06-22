@@ -72,7 +72,7 @@ paths:
       tags:
         - "module1: Order importer"
       summary: Order Importer
-      description: 注文情報をRecustomerに送信します。支払いが完了した注文をRecustomerに送信してください。
+      description: 注文情報をRecustomerに送信します。
       parameters:
         - $ref: "#/components/parameters/StoreKey"
         - $ref: "#/components/parameters/Token"
@@ -1103,6 +1103,7 @@ components:
         - is_tax_included
         - quantity
         - financial_status
+        - gateway
       properties:
         id:
           type: string
