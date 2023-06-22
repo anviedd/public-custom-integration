@@ -1103,7 +1103,6 @@ components:
         - is_tax_included
         - quantity
         - financial_status
-        - gateway
       properties:
         id:
           type: string
