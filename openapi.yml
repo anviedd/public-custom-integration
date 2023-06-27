@@ -296,15 +296,15 @@ components:
               - is_tax_included
             properties:
               order_discount_price:
-                $ref: "#/components/schemas/OrderDiscountPrice"
+                $ref: "#/components/schemas/OrderDiscountPricePost"
               order_point_price:
-                $ref: "#/components/schemas/OrderPointPrice"
+                $ref: "#/components/schemas/OrderPointPricePost"
               total_item_discount_amount:
                 $ref: "#/components/schemas/TotalItemDiscountAmount"
               subtotal_price:
                 $ref: "#/components/schemas/SubtotalPrice"
               total_shipping_price:
-                $ref: "#/components/schemas/TotalShippingPrice"
+                $ref: "#/components/schemas/TotalShippingPricePost"
               total_discount:
                 $ref: "#/components/schemas/TotalDiscount"
               total_price:
@@ -1025,6 +1025,14 @@ components:
       type: string
       description: "注文に対してのポイント利用"
       example: 100
+    OrderDiscountPricePost:
+      type: string
+      description: "注文に対してのディスカウント(通常は0でPostします)"
+      example: 0
+    OrderPointPricePost:
+      type: string
+      description: "注文に対してのポイント利用(通常は0でPostします)"
+      example: 0
     TotalItemDiscountAmount:
       type: string
       description: "商品ディスカウント合計"
@@ -1036,7 +1044,10 @@ components:
     TotalShippingPrice:
       type: string
       description: "注文時の送料"
-      example: 100
+    TotalShippingPricePost:
+      type: string
+      description: "注文時の送料(通常は0でPostします)"
+      example: 0
     TotalDiscount:
       type: string
       description: "ディスカウント合計（order_discount_price+order_point_price+total_item_discount_amount）"
