@@ -1251,6 +1251,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/OrderTransaction"
+          description: 料金情報
         metafields:
           type: object
           description: 独自で設定したいカラム情報
