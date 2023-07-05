@@ -914,11 +914,9 @@ components:
           example: 佐川急便
           description: 配送会社
         tracking_number:
-          type: array
-          items:
-            type: string
-            example: ["4983892", "7348974"]
+          type: string
           description: 追跡番号
+          example: "4983892"
         fulfillment_line_items:
           type: array
           items:
@@ -1197,10 +1195,6 @@ components:
           type: string
           example: "2023-05-10T12:00:00+09:00"
           description: 入金日時
-        gateway:
-          type: string
-          description: 取引ゲートウェイ
-          example: manual
         is_tax_included:
           type: boolean
           example: true
@@ -1251,7 +1245,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/OrderTransaction"
-          description: 料金情報
+          description: 料金情報(支払いが完了している場合必須)
         metafields:
           type: object
           description: 独自で設定したいカラム情報
