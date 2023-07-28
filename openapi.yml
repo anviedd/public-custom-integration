@@ -1031,7 +1031,7 @@ components:
       example: 0
     TotalDiscount:
       type: string
-      description: "ディスカウント合計（order_discount_price+order_point_price+total_item_discount_amount）"
+      description: "ディスカウント合計（order_discount_amount+order_point_price+total_item_discount_amount）"
       example: 100
     TotalPrice:
       type: string
