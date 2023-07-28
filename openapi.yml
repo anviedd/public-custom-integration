@@ -1000,7 +1000,7 @@ components:
           description: "エラー詳細が格納されます(Recustomerにエラーが発生している可能性がございます。お手数ですがお問合せください)"
     OrderDiscountAmount:
       type: string
-      description: "注文に対してのディスカウント金額合計"
+      description: "注文に対してのディスカウント金額合計（モール利用の場合は、モール原資クーポン+店舗原資クーポン）"
       example: 100
     OrderPointPrice:
       type: string
