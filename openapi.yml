@@ -1171,9 +1171,9 @@ components:
           $ref: "#/components/schemas/TotalShippingPrice"
         total_discount:
           $ref: "#/components/schemas/TotalDiscount"
-        additional_fees:
+        additional_fees_amount:
           type: string
-          description: "その他費用"
+          description: "その他費用合計"
           example: 100
         total_price:
           $ref: "#/components/schemas/TotalPrice"
