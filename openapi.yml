@@ -434,6 +434,8 @@ components:
         - item_tax_price
         - fulfillment_status
         - is_tax_included
+        - created_at
+        - updated_at
       properties:
         id:
           type: integer
@@ -459,26 +461,6 @@ components:
           type: string
           example: "https://recustomer.me/image/12345"
           description: 商品画像
-        # total_amount:
-        #   type: string
-        #   example: 990
-        #   description: 合計金額
-        # product_amount:
-        #   type: string
-        #   example: 1000
-        #   description: 商品の金額の合計
-        # discount_amount:
-        #   type: string
-        #   example: 100
-        #   description: 割引額の合計
-        # tax_amount:
-        #   type: string
-        #   example: 90
-        #   description: 税の合計
-        # pre_discount_amount:
-        #   type: string
-        #   example: 1100
-        #   description: 割引前商品価格(税込)の合計
         item_discount_price:
           $ref: "#/components/schemas/ItemDiscountPrice"
         item_discount_amount:
@@ -487,6 +469,10 @@ components:
           $ref: "#/components/schemas/ItemPrice"
         item_compare_at_price:
           $ref: "#/components/schemas/ItemCompareAtPrice"
+        item_cost:
+          type: string
+          description: "注文時点での商品原価"
+          example: 100
         item_quantity:
           $ref: "#/components/schemas/ItemQuantity"
         item_price_amount:
@@ -506,22 +492,10 @@ components:
           items:
             $ref: "#/components/schemas/OrderLineItemOption"
           description: バリエーションのオプション
-        # product_tags:
-        #   type: array
-        #   items:
-        #     type: string
-        #     example: ["test", "sample"]
-        #   description: 商品タグ
-        # product_collections:
-        #   type: array
-        #   items:
-        #     type: string
-        #     example: ["食品", "テストコレクション"]
-        #   description: 商品コレクション
-        # product_supplier:
-        #   type: string
-        #   example: "テスト店舗"
-        #   description: 販売元
+        created_at:
+          $ref: "#/components/schemas/Created_at"
+        updated_at:
+          $ref: "#/components/schemas/Updated_at"
         metafields:
           type: object
           description: 独自で設定したいカラム情報
@@ -819,7 +793,13 @@ components:
       required:
         - email
         - full_name
+        - created_at
+        - updated_at
       properties:
+        customer_id:
+          type: string
+          example: "1"
+          description: カスタマーID
         email:
           type: string
           example: "test@recustomer.co"
@@ -860,6 +840,10 @@ components:
             type: string
             example: ["test顧客", "一般会員"]
           description: 顧客タグ
+        created_at:
+          $ref: "#/components/schemas/Created_at"
+        updated_at:
+          $ref: "#/components/schemas/Updated_at"
         metafields:
           type: object
           description: 独自で設定したいカラム情報
@@ -966,7 +950,7 @@ components:
         currency:
           type: string
           example: "JPY"
-          description: 通貨単位
+          description: 通貨単位 参考(https://en.wikipedia.org/wiki/ISO_4217)
         status:
           type: string
           enum: ["success", "failure", "pending"]
@@ -1014,9 +998,9 @@ components:
           type: string
           example: "Internal Server Error"
           description: "エラー詳細が格納されます(Recustomerにエラーが発生している可能性がございます。お手数ですがお問合せください)"
-    OrderDiscountPrice:
+    OrderDiscountAmount:
       type: string
-      description: "注文に対してのディスカウント"
+      description: "注文に対してのディスカウント金額合計"
       example: 100
     OrderPointPrice:
       type: string
@@ -1175,8 +1159,8 @@ components:
         #   type: string
         #   example: 1100
         #   description: 割引前商品価格(税込)の合計
-        order_discount_price:
-          $ref: "#/components/schemas/OrderDiscountPrice"
+        order_discount_amount:
+          $ref: "#/components/schemas/OrderDiscountAmount"
         order_point_price:
           $ref: "#/components/schemas/OrderPointPrice"
         total_item_discount_amount:
@@ -1187,6 +1171,10 @@ components:
           $ref: "#/components/schemas/TotalShippingPrice"
         total_discount:
           $ref: "#/components/schemas/TotalDiscount"
+        additional_fees:
+          type: string
+          description: "その他費用"
+          example: 100
         total_price:
           $ref: "#/components/schemas/TotalPrice"
         total_tax:
