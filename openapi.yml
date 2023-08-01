@@ -497,7 +497,9 @@ components:
         updated_at:
           $ref: "#/components/schemas/Updated_at"
         metafields:
-          type: object
+          type: array
+          items:
+              $ref: "#/components/schemas/Metafields"
           description: 独自で設定したいカラム情報
 
     OrderLineItem:
@@ -845,7 +847,9 @@ components:
         updated_at:
           $ref: "#/components/schemas/Updated_at"
         metafields:
-          type: object
+          type: array
+          items:
+            $ref: "#/components/schemas/Metafields"
           description: 独自で設定したいカラム情報
     CustomerPost:
       type: object
@@ -1230,5 +1234,20 @@ components:
             $ref: "#/components/schemas/OrderTransaction"
           description: 料金情報(支払いが完了している場合必須)
         metafields:
-          type: object
+          type: array
+          items:
+            $ref: "#/components/schemas/Metafields"
           description: 独自で設定したいカラム情報
+    Metafields:
+      type: object
+      properties:
+        key:
+          type: string
+          description: メタフィールドのキー
+          example: "coupon_code"
+        value:
+          type: string
+          description: メタフィールドのキーに対する値
+          value: "test_coupon_1"
+
+
