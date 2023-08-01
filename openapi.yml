@@ -1246,7 +1246,7 @@ components:
           description: メタフィールドのキー
           example: "coupon_code"
         value:
-          type: string
+          type: any
           description: メタフィールドのキーに対する値
           value: "test_coupon_1"
 
