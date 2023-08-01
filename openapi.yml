@@ -438,8 +438,8 @@ components:
         - updated_at
       properties:
         id:
-          type: integer
-          example: 1000
+          type: string
+          example: "1000"
           description: ラインアイテムID
         product_id:
           type: string
@@ -890,8 +890,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          example: 1
+          type: string
+          example: "1"
           description: 発送情報ID
         status:
           type: string
@@ -918,8 +918,8 @@ components:
       type: object
       properties:
         id:
-          type: integer
-          example: 1
+          type: string
+          example: "1"
           description: 発送商品ID
         order_line_item_id:
           type: integer
@@ -940,8 +940,8 @@ components:
       description: 料金情報
       properties:
         id:
-          type: integer
-          example: 2
+          type: string
+          example: "2"
           description: トランザクションID
         parent_id:
           type: integer
