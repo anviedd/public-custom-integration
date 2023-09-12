@@ -19,6 +19,10 @@ info:
     ### Module3: Cancel
     Cancelモジュールは、Recustomer上で注文のキャンセル処理が行われた際に、即座にその注文の出荷を停止するために使用されます。<br />
     Custom Integrationは、Recustomerを利用するために必要な各種データを連携するためのAPIです。<br />
+    #### データフォーマット
+    <ul>
+      <li>country_code(国コード) : <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2</a></li>
+    </ul>
 
     # Authentication 
     ### Order Importer（Module1）
