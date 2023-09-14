@@ -903,8 +903,16 @@ components:
           description: "発送状況 pending: 保留中、open: 処理中、success: 処理成功、cancelled: キャンセル、failure: 処理失敗"
         tracking_company:
           type: string
-          example: 佐川急便
-          description: 配送会社
+          enum:
+            - "yamato"
+            - "sagawa"
+            - "jp"
+            - "seino_unyu"
+            - "eco_hai"
+            - "global"
+            - "others"
+          example: yamato
+          description: "配送会社 yamato: ヤマト運輸、sagawa: 佐川集荷、jp: 日本郵便、seino_unyu: 西濃運輸、eco_hai: エコ配、global: 国際宅配便、others: その他"
         tracking_number:
           type: string
           description: 追跡番号
