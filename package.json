@@ -2,7 +2,7 @@
     "name": "openapi-redoc",
     "version": "1.0.0",
     "scripts": {
-        "build": "redoc-cli bundle openapi.yml --output dist/index.html"
+        "build": "redoc-cli bundle openapi.yml --output dist/index.html && cp openapi.yml dist/openapi.yml"
     },
     "dependencies": {
         "redoc-cli": "^0.12.1"
