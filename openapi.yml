@@ -147,7 +147,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OrderBase"
+                $ref: "#/components/schemas/OrderResponse"
         "400":
           description: Bad request
           content:
@@ -188,7 +188,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/OrderBase"
+                $ref: "#/components/schemas/OrderResponse"
         "400":
           description: Bad request
           content:
@@ -503,7 +503,7 @@ components:
         metafields:
           type: array
           items:
-              $ref: "#/components/schemas/Metafields"
+            $ref: "#/components/schemas/Metafields"
           description: 独自で設定したいカラム情報
 
     OrderLineItem:
@@ -594,22 +594,6 @@ components:
           items:
             $ref: "#/components/schemas/OrderLineItemOption"
           description: バリエーションのオプション
-        product_tags:
-          type: array
-          items:
-            type: string
-            example: ["test", "sample"]
-          description: 商品タグ
-        product_collections:
-          type: array
-          items:
-            type: string
-            example: ["食品", "テストコレクション"]
-          description: 商品コレクション
-        product_supplier:
-          type: string
-          example: "テスト店舗"
-          description: 販売元
 
     OrderLineItemOption:
       type: object
@@ -844,8 +828,10 @@ components:
           type: array
           items:
             type: string
-            example: ["test顧客", "一般会員"]
           description: 顧客タグ
+          example:
+            - "test顧客"
+            - "一般会員"
         created_at:
           $ref: "#/components/schemas/Created_at"
         updated_at:
@@ -1122,13 +1108,7 @@ components:
         status:
           type: string
           # TODO: ステータスの内容は検討
-          enum:
-            [
-              "processing",
-              "fulfilled",
-              "partial_fulfilled",
-              "canceled"
-            ]
+          enum: ["processing", "fulfilled", "partial_fulfilled", "canceled"]
           description: "注文ステータス processing: 処理中、fulfilled: 発送済み、partial_fulfilled: 一部発送済み、canceled: キャンセル済み"
           example: "processing"
         fulfillment_status:
@@ -1150,26 +1130,6 @@ components:
             ]
           description: "支払いステータス pending: 保留中、authorized: 認証済み、partially_paid: 一部支払い済み、paid: 支払い済み、partially_refunded: 一部返金済み、refunded: 返金済み、voided: 無効"
           example: "paid"
-        # total_amount:
-        #   type: string
-        #   example: 990
-        #   description: 合計金額
-        # total_product_amount:
-        #   type: string
-        #   example: 1000
-        #   description: 商品金額の合計
-        # total_discount_amount:
-        #   type: string
-        #   example: 100
-        #   description: 割引金額の合計
-        # total_tax_amount:
-        #   type: string
-        #   example: 90
-        #   description: 税の合計金額
-        # pre_discount_amount:
-        #   type: string
-        #   example: 1100
-        #   description: 割引前商品価格(税込)の合計
         order_discount_amount:
           $ref: "#/components/schemas/OrderDiscountAmount"
         order_point_price:
@@ -1210,17 +1170,10 @@ components:
           $ref: "#/components/schemas/Created_at"
         updated_at:
           $ref: "#/components/schemas/Updated_at"
-        # order_tags:
-        #   type: array
-        #   items:
-        #     type: string
-        #     example: ["テスト注文"]
-        #   description: 注文タグ
         note:
           type: string
           example: "テスト注文"
           description: 注文の補足情報
-
         customer:
           $ref: "#/components/schemas/Customer"
           description: 顧客情報
@@ -1261,5 +1214,267 @@ components:
           type: any
           description: メタフィールドのキーに対する値
           value: "test_coupon_1"
-
-
+    OrderResponse:
+      type: object
+      required:
+        - id
+        - order_number
+        - status
+        - order_discount_price
+        - order_point_price
+        - total_item_discount_amount
+        - subtotal_price
+        - total_shipping_price
+        - total_discount
+        - total_price
+        - total_tax
+        - currency
+        - customer
+        - line_items
+        - shipping_address
+        - billing_address
+        - fulfillments
+        - created_at
+        - fulfillment_status
+        - is_tax_included
+        - quantity
+        - financial_status
+      properties:
+        id:
+          type: string
+          example: 1234567
+          description: 注文ID
+        order_number:
+          type: string
+          example: 1001
+          description: 注文番号
+        status:
+          type: string
+          # TODO: ステータスの内容は検討
+          enum: ["processing", "fulfilled", "partial_fulfilled", "canceled"]
+          description: "注文ステータス processing: 処理中、fulfilled: 発送済み、partial_fulfilled: 一部発送済み、canceled: キャンセル済み"
+          example: "processing"
+        fulfillment_status:
+          type: string
+          enum: ["fulfilled", "null", "partial", "canceled"]
+          description: "発送ステータス fulfilled: 発送済み、null: 未発送、partial: 一部発送済み、canceled: キャンセル済み"
+          example: "fulfilled"
+        financial_status:
+          type: string
+          enum:
+            [
+              "pending",
+              "authorized",
+              "partially_paid",
+              "paid",
+              "partially_refunded",
+              "refunded",
+              "voided",
+            ]
+          description: "支払いステータス pending: 保留中、authorized: 認証済み、partially_paid: 一部支払い済み、paid: 支払い済み、partially_refunded: 一部返金済み、refunded: 返金済み、voided: 無効"
+          example: "paid"
+        order_discount_amount:
+          $ref: "#/components/schemas/OrderDiscountAmount"
+        order_point_price:
+          $ref: "#/components/schemas/OrderPointPrice"
+        total_item_discount_amount:
+          $ref: "#/components/schemas/TotalItemDiscountAmount"
+        subtotal_price:
+          $ref: "#/components/schemas/SubtotalPrice"
+        total_shipping_price:
+          $ref: "#/components/schemas/TotalShippingPrice"
+        total_discount:
+          $ref: "#/components/schemas/TotalDiscount"
+        additional_fees_amount:
+          type: string
+          description: "その他費用合計"
+          example: 100
+        total_price:
+          $ref: "#/components/schemas/TotalPrice"
+        total_tax:
+          $ref: "#/components/schemas/TotalTax"
+        payment_at:
+          type: string
+          example: "2023-05-10T12:00:00+09:00"
+          description: 入金日時
+        is_tax_included:
+          type: boolean
+          example: true
+          description: total_priceが税を含む金額か
+        currency:
+          type: string
+          example: "JPY"
+          description: 通貨単位
+        quantity:
+          type: integer
+          example: 3
+          description: 注文商品数の合計
+        created_at:
+          $ref: "#/components/schemas/Created_at"
+        updated_at:
+          $ref: "#/components/schemas/Updated_at"
+        note:
+          type: string
+          example: "テスト注文"
+          description: 注文の補足情報
+        customer:
+          $ref: "#/components/schemas/CustomerNotMetafield"
+          description: 顧客情報
+        line_items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderLineItemNotMetaField"
+          description: 注文商品
+        shipping_address:
+          $ref: "#/components/schemas/ShippingAddress"
+          description: 配送住所
+        billing_address:
+          $ref: "#/components/schemas/BillingAddress"
+          description: 請求住所
+        fulfillments:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderFulfillment"
+          description: 発送情報
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderTransaction"
+          description: 料金情報(支払いが完了している場合必須)
+    CustomerNotMetafield:
+      type: object
+      description: 顧客情報
+      required:
+        - email
+        - full_name
+        - created_at
+        - updated_at
+      properties:
+        customer_id:
+          type: string
+          example: "1"
+          description: カスタマーID
+        email:
+          type: string
+          example: "test@recustomer.co"
+          description: メールアドレス
+        last_name:
+          type: string
+          nullable: true
+          example: "佐藤"
+          description: 姓
+        first_name:
+          type: string
+          nullable: true
+          example: "太郎"
+          description: 名
+        full_name:
+          type: string
+          example: "佐藤 太郎"
+          description: 姓名
+        phone_number:
+          type: string
+          example: "000-####-####"
+          description: 電話番号
+        is_consent_email_marketing:
+          type: boolean
+          example: false
+          description: emailマーケティングに同意しているか
+        is_consent_sms_marketing:
+          type: boolean
+          example: false
+          description: SMSマーケティングに同意しているか
+        purchase_times:
+          type: integer
+          example: 11
+          description: 購入回数
+        customer_tags:
+          type: array
+          items:
+            type: string
+          description: 顧客タグ
+          example:
+            - "test顧客"
+            - "一般会員"
+        created_at:
+          $ref: "#/components/schemas/Created_at"
+        updated_at:
+          $ref: "#/components/schemas/Updated_at"
+    OrderLineItemNotMetaField:
+      type: object
+      required:
+        - id
+        - quantity
+        - product_id
+        - sku
+        - item_discount_price
+        - item_discount_amount
+        - item_price
+        - item_compare_at_price
+        - item_quantity
+        - item_price_amount
+        - item_tax_price
+        - fulfillment_status
+        - is_tax_included
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: string
+          example: "1000"
+          description: ラインアイテムID
+        product_id:
+          type: string
+          example: "product_id"
+          description: 商品ID
+        product_name:
+          type: string
+          example: "テスト商品"
+          description: 商品名
+        variant_id:
+          type: string
+          example: "2538974832789"
+          description: バリエーションID
+        sku:
+          type: string
+          example: "product_id_S_Red"
+          description: SKU
+        item_image:
+          type: string
+          example: "https://recustomer.me/image/12345"
+          description: 商品画像
+        item_discount_price:
+          $ref: "#/components/schemas/ItemDiscountPrice"
+        item_discount_amount:
+          $ref: "#/components/schemas/ItemDiscountAmount"
+        item_price:
+          $ref: "#/components/schemas/ItemPrice"
+        item_compare_at_price:
+          $ref: "#/components/schemas/ItemCompareAtPrice"
+        item_cost:
+          type: string
+          description: "注文時点での商品原価"
+          example: 100
+        item_quantity:
+          $ref: "#/components/schemas/ItemQuantity"
+        item_price_amount:
+          $ref: "#/components/schemas/ItemPriceAmount"
+        item_tax_price:
+          $ref: "#/components/schemas/ItemTaxPrice"
+        is_tax_included:
+          type: boolean
+          example: true
+          description: item_price_amountが税を含む金額か
+        fulfillment_status:
+          type: string
+          enum: ["null", "fulfilled", "partial", "not_eligible"]
+          description: "発送状況 null: 未発送、fulfilled: 発送済み, partial: 一部発送済み, not_eligible: 発送対象外"
+        variant_options:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderLineItemOption"
+          description: バリエーションのオプション
+        created_at:
+          $ref: "#/components/schemas/Created_at"
+        updated_at:
+          $ref: "#/components/schemas/Updated_at"
