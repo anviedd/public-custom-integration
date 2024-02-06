@@ -440,6 +440,8 @@ components:
         - is_tax_included
         - created_at
         - updated_at
+        - product_name
+        - item_image
       properties:
         id:
           type: string
@@ -522,6 +524,8 @@ components:
         - item_tax_price
         - fulfillment_status
         - is_tax_included
+        - product_name
+        - item_image
       properties:
         id:
           type: integer
