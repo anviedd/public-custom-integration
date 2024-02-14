@@ -913,9 +913,14 @@ components:
             $ref: "#/components/schemas/FulfillmentLineItems"
           description: 発送商品
         created_at:
-          $ref: "#/components/schemas/Created_at"
+          type: string
+          example: "2023-05-10T12:00:00+09:00"
+          description: 発送日時
         updated_at:
           $ref: "#/components/schemas/Updated_at"
+      required:
+        - id
+        - status
     FulfillmentLineItems:
       type: object
       properties:
@@ -931,6 +936,10 @@ components:
           type: integer
           example: 2
           description: 配送済みの商品数
+      required:
+        - id
+        - order_line_item_id
+        - quantity
     OrderTransaction:
       type: object
       required:
@@ -1171,7 +1180,9 @@ components:
           example: 3
           description: 注文商品数の合計
         created_at:
-          $ref: "#/components/schemas/Created_at"
+          type: string
+          example: "2023-05-10T12:00:00+09:00"
+          description: 注文日時
         updated_at:
           $ref: "#/components/schemas/Updated_at"
         note:
@@ -1218,6 +1229,9 @@ components:
           type: any
           description: メタフィールドのキーに対する値
           value: "test_coupon_1"
+      required:
+        - key
+        - value
     OrderResponse:
       type: object
       required:
