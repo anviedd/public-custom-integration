@@ -1189,6 +1189,10 @@ components:
           type: string
           example: "テスト注文"
           description: 注文の補足情報
+        order_link:
+          type: string
+          example: "https://recustomer.me/order/1"
+          description: 注文のリンク
         customer:
           $ref: "#/components/schemas/Customer"
           description: 顧客情報
