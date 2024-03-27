@@ -69,9 +69,9 @@ paths:
   /orders/import:
     post:
       servers:
-        - url: "https://integration.prod.recustomer.me/external"
+        - url: "https://entity.rcmr.io/external"
           description: 本番
-        - url: "https://integration.sandbox.recustomer.me/external"
+        - url: "https://entity.api-dev.io//external"
           description: 開発
       tags:
         - "module1: Order importer"
