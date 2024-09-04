@@ -71,8 +71,6 @@ paths:
       servers:
         - url: "https://entity.rcmr.io/external"
           description: 本番
-        - url: "https://entity.api-dev.io//external"
-          description: 開発
       tags:
         - "module1: Order importer"
       summary: Order Importer
