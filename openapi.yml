@@ -281,7 +281,7 @@ components:
           schema:
             type: object
             required:
-              - order_id
+              - original_order_id
               - line_items
               - order_discount_price
               - order_point_price
@@ -298,7 +298,7 @@ components:
               - customer
               - is_tax_included
             properties:
-              order_id:
+              original_order_id:
                 type: string
                 example: "12345"
                 description: 元の注文ID
@@ -515,7 +515,7 @@ components:
       type: object
       required:
         - id
-        - item_id
+        - original_item_id
         - quantity
         - product_id
         - sku
@@ -535,7 +535,7 @@ components:
           type: integer
           example: 1000
           description: ラインアイテムID
-        item_id:
+        original_item_id:
           type: string
           example: "123"
           description: 元のラインアイテムID
