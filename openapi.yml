@@ -281,6 +281,7 @@ components:
           schema:
             type: object
             required:
+              - order_id
               - line_items
               - order_discount_price
               - order_point_price
@@ -297,6 +298,10 @@ components:
               - customer
               - is_tax_included
             properties:
+              order_id:
+                type: string
+                example: "12345"
+                description: 元の注文ID
               order_discount_price:
                 $ref: "#/components/schemas/OrderDiscountPricePost"
               order_point_price:
@@ -510,6 +515,7 @@ components:
       type: object
       required:
         - id
+        - item_id
         - quantity
         - product_id
         - sku
@@ -529,6 +535,10 @@ components:
           type: integer
           example: 1000
           description: ラインアイテムID
+        item_id:
+          type: string
+          example: "123"
+          description: 元のラインアイテムID
         product_id:
           type: string
           example: "product_id"

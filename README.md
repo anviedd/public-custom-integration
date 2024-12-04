@@ -21,10 +21,13 @@ DevContainerに接続することで、openapi向けvscode拡張機能を使う�
 https://zenn.dev/s_t_pool/articles/954dfe51b950c18d08e9
 
 ## デプロイ方法
-redocからjsonファイルをダウンロードします。
-ダウンロードファイルがあるディレクトリ内で下記コマンドを実行します
+以前はredoc-cliを使用してましたが動かなくなっています。
+事前にredoclyをinstallしてください。
 ```
-redoc-cli bundle  swagger_20230531.json -o index.html
+npm i -g @redocly/cli@latest
 ```
-出力されたhtmlファイルをs3に手動でアップロードします
+```
+redocly build-docs openapi.yml -o index.html
+```
+出力されたhtmlファイルを[s3](https://ap-northeast-1.console.aws.amazon.com/s3/buckets/developer.recustomer.me?region=ap-northeast-1&bucketType=general&tab=objects)に手動でアップロードします
 (※将来的には自動化したいですが、今は手動で対応しています)
